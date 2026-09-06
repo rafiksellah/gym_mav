@@ -20,9 +20,9 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $admin = new User();
-        $admin->setEmail('admin@vicfit.dz');
+        $admin->setEmail('admin@viefit.dz');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'VicfitAdmin2026!'));
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'ViefitAdmin2026!'));
         $manager->persist($admin);
 
         $categoryStations = new Category();
@@ -40,16 +40,16 @@ class AppFixtures extends Fixture
         $manager->persist($categoryMusculation);
 
         $titan = new Product();
-        $titan->setName('VicFit TITAN Multistation');
-        $titan->setSlug('vicfit-titan-multistation');
+        $titan->setName('VieFit TITAN Multistation');
+        $titan->setSlug('viefit-titan-multistation');
         $titan->setCategory($categoryStations);
         $titan->setShortDescription('Une machine. Plusieurs possibilités. Une seule priorité : la performance.');
         $titan->setDescription(
-            "La VicFit TITAN est une station de musculation multifonction professionnelle conçue pour offrir un entraînement complet du corps. Plus qu'une simple machine, c'est un écosystème d'entraînement complet qui réunit plusieurs postes indépendants dans un design moderne et robuste.\n\n".
+            "La VieFit TITAN est une station de musculation multifonction professionnelle conçue pour offrir un entraînement complet du corps. Plus qu'une simple machine, c'est un écosystème d'entraînement complet qui réunit plusieurs postes indépendants dans un design moderne et robuste.\n\n".
             "Grâce à ses multiples postes et ses poulies réglables, elle permet de travailler efficacement tous les principaux groupes musculaires : dos, pectoraux, épaules, bras, jambes et abdominaux.\n\n".
             "Construite pour durer, sa structure en acier haute résistance assure une stabilité maximale et une durabilité à toute épreuve, même en utilisation intensive. Elle intègre des systèmes de poulies de haute qualité avec roulements pour une fluidité exceptionnelle, et des câbles gainés haute résistance."
         );
-        $titan->setBrand('VicFit');
+        $titan->setBrand('VieFit');
         $titan->setReference('VF-TITAN-8ST');
         $titan->setKeyFeatures(implode("\n", [
             'Station multifonction complète pour un entraînement global',
@@ -72,12 +72,12 @@ class AppFixtures extends Fixture
             'Câbles: Acier gainé haute résistance',
             'Accessoires inclus: Multiples poignées, barres, sangles de cheville',
         ]));
-        $titan->setMainImage('viefit-titan-1.jpeg');
+        $titan->setMainImage('image2-6a9d82b860631.jpg');
         $titan->setIsFeatured(true);
         $titan->setIsActive(true);
         $manager->persist($titan);
 
-        foreach (['viefit-titan-2.jpeg', 'viefit-titan-3.jpeg', 'viefit-titan-4.jpeg', 'viefit-titan-5.jpeg'] as $position => $filename) {
+        foreach (['image3-6a9d82b860d0a.jpg', 'image5-6a9d82b861290.jpg', 'image6-6a9d82b8617ae.jpg', 'image7-6a9d82b861d28.jpg'] as $position => $filename) {
             $image = new ProductImage();
             $image->setFilename($filename);
             $image->setPosition($position);
@@ -86,14 +86,14 @@ class AppFixtures extends Fixture
         }
 
         $gripmaster = new Product();
-        $gripmaster->setName('VicFit GRIPMASTER Multistation');
-        $gripmaster->setSlug('vicfit-gripmaster-multistation');
+        $gripmaster->setName('VieFit GRIPMASTER Multistation');
+        $gripmaster->setSlug('viefit-gripmaster-multistation');
         $gripmaster->setCategory($categoryMusculation);
         $gripmaster->setShortDescription('For the ultimate grip & forearm power.');
         $gripmaster->setDescription(
             "La station multi-fonctions GRIPMASTER offre une solution complète pour développer la force de préhension, l'endurance et la taille des avant-bras. Avec ses postes multiples, elle permet une variété illimitée d'exercices de flexion, d'extension, de rotation et de pincement."
         );
-        $gripmaster->setBrand('VicFit');
+        $gripmaster->setBrand('VieFit');
         $gripmaster->setReference('VF-GRIP-3ST');
         $gripmaster->setKeyFeatures(implode("\n", [
             'Conception modulaire 3 postes',
@@ -110,21 +110,21 @@ class AppFixtures extends Fixture
             'Charge de poids: 3 x 60 kg (standard)',
             'Garantie: 5 ans cadre, 1 an pièces',
         ]));
-        $gripmaster->setMainImage('viefit-gripmaster-1.jpeg');
+        $gripmaster->setMainImage('image9-6a9d82ba5a16e.jpg');
         $gripmaster->setIsFeatured(true);
         $gripmaster->setIsActive(true);
         $manager->persist($gripmaster);
 
         $hercules = new Product();
-        $hercules->setName('VicFit HERCULES Dips Assist Machine');
-        $hercules->setSlug('vicfit-hercules-dips-assist');
+        $hercules->setName('VieFit HERCULES Dips Assist Machine');
+        $hercules->setSlug('viefit-hercules-dips-assist');
         $hercules->setCategory($categoryMusculation);
         $hercules->setShortDescription('La force au service de vos performances.');
         $hercules->setDescription(
-            "La VicFit Hercules est une machine de dips assistés haut de gamme qui permet de cibler intensément les triceps, les pectoraux inférieurs et les deltoïdes antérieurs. Grâce à son système d'assistance par contrepoids, elle permet d'adapter la charge selon le niveau et les objectifs de chaque utilisateur.\n\n".
+            "La VieFit Hercules est une machine de dips assistés haut de gamme qui permet de cibler intensément les triceps, les pectoraux inférieurs et les deltoïdes antérieurs. Grâce à son système d'assistance par contrepoids, elle permet d'adapter la charge selon le niveau et les objectifs de chaque utilisateur.\n\n".
             "Son design ergonomique assure un mouvement naturel et fluide, tout en garantissant une position stable et confortable. Robuste, fiable et conçue pour durer, la Hercules s'intègre parfaitement dans toutes les salles de sport professionnelles ou espaces d'entraînement privés."
         );
-        $hercules->setBrand('VicFit');
+        $hercules->setBrand('VieFit');
         $hercules->setReference('VF-HERC-DA1');
         $hercules->setKeyFeatures(implode("\n", [
             'Travail ciblé : triceps, pectoraux inférieurs et épaules',
@@ -142,7 +142,7 @@ class AppFixtures extends Fixture
             'Structure: Acier haute résistance',
             'Capacité utilisateur: 150 kg max',
         ]));
-        $hercules->setMainImage('viefit-hercules-1.jpeg');
+        $hercules->setMainImage('image1-6a9d82bc35c7e.jpg');
         $hercules->setIsFeatured(false);
         $hercules->setIsActive(true);
         $manager->persist($hercules);
