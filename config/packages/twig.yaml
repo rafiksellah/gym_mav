@@ -1,0 +1,17 @@
+twig:
+    file_name_pattern: '*.twig'
+    globals:
+        company_name: '%app.company_name%'
+        company_tagline: '%app.company_tagline%'
+        whatsapp_number: '%app.whatsapp_number%'
+        phone_number: '%app.phone_number%'
+        contact_email: '%app.contact_email%'
+        company_address: '%app.company_address%'
+        opening_hours: '%app.opening_hours%'
+        facebook_url: '%app.facebook_url%'
+        instagram_url: '%app.instagram_url%'
+        google_maps_embed_url: '%app.google_maps_embed_url%'
+
+when@test:
+    twig:
+        strict_variables: true

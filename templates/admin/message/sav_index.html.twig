@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Demandes SAV{% endblock %}
+{% block page_title %}Messages{% endblock %}
+
+{% block body %}
+
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item"><a class="nav-link" href="{{ path('admin_message_contact_index') }}">Contact</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ path('admin_message_quote_index') }}">Devis</a></li>
+    <li class="nav-item"><a class="nav-link active" href="{{ path('admin_message_sav_index') }}">SAV</a></li>
+</ul>
+
+<div class="table-responsive bg-white rounded-viefit border">
+    <table class="table align-middle mb-0">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Nom</th>
+                <th>Sujet</th>
+                <th>Produit</th>
+                <th>Date</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+                <tr class="{{ req.isRead ? '' : 'fw-semibold' }}">
+                    <td>{% if not req.isRead %}<span class="badge bg-danger">Nouveau</span>{% endif %}</td>
+                    <td>{{ req.firstName }} {{ req.lastName }}<div class="text-secondary small fw-normal">{{ req.email }} · {{ req.phone }}</div></td>
+                    <td>{{ req.subject }}</td>
+                    <td>{{ req.product ? req.product.name : '—' }}</td>
+                    <td>{{ req.createdAt|date('d/m/Y H:i') }}</td>
+                    <td class="text-end">
+                        <a href="{{ path('admin_message_sav_show', {id: req.id}) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <form method="post" action="{{ path('admin_message_sav_delete', {id: req.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer cette demande ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-message-' ~ req.id) }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-secondary py-4">Aucune demande SAV pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

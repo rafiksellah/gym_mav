@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ company_name }} — Équipements de Fitness Professionnels en Algérie{% endblock %}
+
+{% block body %}
+
+<section class="hero-section" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop');">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <span class="section-title-eyebrow mb-3 d-block">Vente • Installation • Maintenance</span>
+                <h1 class="mb-4">Équipez votre salle avec du matériel <span>fitness professionnel</span></h1>
+                <p class="lead mb-5">{{ company_name }} accompagne salles de sport, hôtels et particuliers en Algérie dans le choix, l'installation et la maintenance de leurs équipements de musculation et cardio-training.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ path('front_catalog') }}" class="btn btn-teal btn-lg px-4">Découvrir nos produits</a>
+                    <a href="{{ path('front_contact') }}" class="btn btn-outline-light-custom btn-lg px-4">Nous contacter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-6">
+                <span class="section-title-eyebrow">Qui sommes-nous</span>
+                <h2 class="mt-2 mb-4">Votre partenaire fitness de confiance en Algérie</h2>
+                <p class="text-secondary mb-3">Depuis notre implantation, {{ company_name }} sélectionne et distribue des machines de musculation, cardio-training et fonctionnelles auprès de fournisseurs reconnus, adaptées aux besoins des salles de sport, hôtels, centres de remise en forme et particuliers exigeants.</p>
+                <p class="text-secondary mb-4">Nous accompagnons chaque client de la présentation du matériel jusqu'à l'installation et le suivi après-vente, avec une équipe technique disponible sur tout le territoire.</p>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-patch-check-fill text-teal fs-4"></i>
+                            <span class="fw-semibold">Matériel certifié</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-tools text-teal fs-4"></i>
+                            <span class="fw-semibold">SAV réactif</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-truck text-teal fs-4"></i>
+                            <span class="fw-semibold">Livraison nationale</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-headset text-teal fs-4"></i>
+                            <span class="fw-semibold">Conseil personnalisé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200&auto=format&fit=crop" alt="Salle de sport équipée" class="img-fluid rounded-viefit">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if categories|length > 0 %}
+<section class="section-dark py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-title-eyebrow">Nos catégories</span>
+            <h2 class="mt-2">Trouvez l'équipement adapté à vos besoins</h2>
+        </div>
+        <div class="row g-4">
+            {% for category in categories %}
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ path('front_catalog', {categorie: category.slug}) }}" class="text-decoration-none">
+                        <div class="card-viefit">
+                            <div class="card-img-wrap">
+                                <img src="{{ category.image ? asset('uploads/categories/' ~ category.image) : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop' }}" alt="{{ category.name }}">
+                            </div>
+                            <div class="p-3 text-center">
+                                <h3 class="h6 mb-0 text-dark">{{ category.name }}</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if featuredProducts|length > 0 %}
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-title-eyebrow">Sélection</span>
+            <h2 class="mt-2">Produits mis en avant</h2>
+        </div>
+        <div class="row g-4">
+            {% for product in featuredProducts %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card-viefit">
+                        <div class="card-img-wrap">
+                            <img src="{{ product.mainImage ? asset('uploads/products/' ~ product.mainImage) : 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop' }}" alt="{{ product.name }}">
+                        </div>
+                        <div class="p-4">
+                            <span class="badge badge-category rounded-pill px-3 py-2 mb-2">{{ product.category.name }}</span>
+                            <h3 class="h5 mb-2">{{ product.name }}</h3>
+                            <p class="text-secondary small mb-3">{{ product.shortDescription }}</p>
+                            <a href="{{ path('front_product_show', {slug: product.slug}) }}" class="btn btn-outline-teal btn-sm">Voir le produit</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ path('front_catalog') }}" class="btn btn-teal px-4">Voir tout le catalogue</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if services|length > 0 %}
+<section class="section-dark py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-title-eyebrow">Nos services</span>
+            <h2 class="mt-2">Un accompagnement complet</h2>
+        </div>
+        <div class="row g-4">
+            {% for service in services|slice(0, 3) %}
+                <div class="col-md-4">
+                    <div class="service-card text-center">
+                        <div class="service-icon mx-auto">
+                            <i class="bi {{ service.icon }}"></i>
+                        </div>
+                        <h3 class="h5 mb-2">{{ service.title }}</h3>
+                        <p class="text-muted-light small mb-0">{{ service.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ path('front_service') }}" class="btn btn-outline-teal px-4">Tous nos services</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1581122584612-713f89daa8eb?q=80&w=1200&auto=format&fit=crop" alt="Technicien en maintenance" class="img-fluid rounded-viefit">
+            </div>
+            <div class="col-lg-6">
+                <span class="section-title-eyebrow">Service Après-Vente</span>
+                <h2 class="mt-2 mb-4">Une équipe technique à votre écoute</h2>
+                <p class="text-secondary mb-4">Panne, réglage, entretien préventif : notre service après-vente intervient rapidement pour garantir la longévité de vos équipements et la sécurité de vos utilisateurs.</p>
+                <a href="{{ path('front_sav') }}" class="btn btn-teal px-4">Demander une intervention</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section py-5">
+    <div class="container text-center py-4">
+        <h2 class="mb-3">Un projet d'équipement fitness ?</h2>
+        <p class="text-muted-light mb-4 mx-auto" style="max-width: 600px;">Contactez-nous dès aujourd'hui pour un accompagnement personnalisé et un devis adapté à votre budget.</p>
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+            <a href="{{ path('front_contact') }}" class="btn btn-teal btn-lg px-4">Demander un devis</a>
+            <a href="https://wa.me/{{ whatsapp_number }}" target="_blank" rel="noopener" class="btn btn-outline-light-custom btn-lg px-4">
+                <i class="bi bi-whatsapp me-1"></i> WhatsApp
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

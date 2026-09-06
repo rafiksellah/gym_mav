@@ -1,0 +1,32 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ isNew ? 'Nouveau service' : 'Modifier ' ~ service.title }}{% endblock %}
+{% block page_title %}{{ isNew ? 'Nouveau service' : 'Modifier le service' }}{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+<div class="bg-white rounded-viefit border p-4" style="max-width: 700px;">
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.icon) }}
+
+        {% if not isNew and service.image %}
+            <div class="mb-2">
+                <img src="{{ asset('uploads/services/' ~ service.image) }}" alt="" style="width:100px;height:100px;object-fit:cover;border-radius:0.35rem;">
+            </div>
+        {% endif %}
+        {{ form_row(form.imageFile) }}
+        {{ form_row(form.position) }}
+        {{ form_row(form.isActive) }}
+
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-teal px-4">Enregistrer</button>
+            <a href="{{ path('admin_service_index') }}" class="btn btn-outline-secondary">Annuler</a>
+        </div>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

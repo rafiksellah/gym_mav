@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact — {{ company_name }}{% endblock %}
+
+{% block body %}
+
+<section class="section-dark py-5" style="margin-top: 76px;">
+    <div class="container py-4">
+        <span class="section-title-eyebrow">Contact</span>
+        <h1 class="mt-2 mb-0">Parlons de votre projet</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row gy-5">
+            <div class="col-lg-5">
+                <h2 class="h4 mb-4">Nos coordonnées</h2>
+                <ul class="list-unstyled d-flex flex-column gap-4 mb-5">
+                    <li class="d-flex gap-3">
+                        <i class="bi bi-geo-alt-fill text-teal fs-4"></i>
+                        <div>
+                            <div class="fw-semibold">Adresse</div>
+                            <div class="text-secondary">{{ company_address }}</div>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-3">
+                        <i class="bi bi-telephone-fill text-teal fs-4"></i>
+                        <div>
+                            <div class="fw-semibold">Téléphone</div>
+                            <a href="tel:+{{ whatsapp_number }}" class="text-secondary">{{ phone_number }}</a>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-3">
+                        <i class="bi bi-envelope-fill text-teal fs-4"></i>
+                        <div>
+                            <div class="fw-semibold">Email</div>
+                            <a href="mailto:{{ contact_email }}" class="text-secondary">{{ contact_email }}</a>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-3">
+                        <i class="bi bi-clock-fill text-teal fs-4"></i>
+                        <div>
+                            <div class="fw-semibold">Horaires</div>
+                            <div class="text-secondary">{{ opening_hours }}</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <a href="https://wa.me/{{ whatsapp_number }}" target="_blank" rel="noopener" class="btn btn-teal px-4">
+                    <i class="bi bi-whatsapp me-1"></i> Discuter sur WhatsApp
+                </a>
+
+                <div class="ratio ratio-4x3 rounded-viefit overflow-hidden mt-5">
+                    <iframe src="{{ google_maps_embed_url }}" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <h2 class="h4 mb-4">Envoyez-nous un message</h2>
+                {{ form_start(form, {attr: {class: 'row g-3'}}) }}
+                    <div class="col-md-6">
+                        {{ form_label(form.name, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.name, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.email, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.email, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.phone, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.phone, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.phone) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.subject, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.subject, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.subject) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_label(form.message, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.message, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.message) }}
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-teal px-5">Envoyer le message</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos services — {{ company_name }}{% endblock %}
+
+{% block body %}
+
+<section class="section-dark py-5" style="margin-top: 76px;">
+    <div class="container py-4">
+        <span class="section-title-eyebrow">Nos services</span>
+        <h1 class="mt-2 mb-0">Un accompagnement complet, du conseil à la maintenance</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        {% if services|length > 0 %}
+            <div class="row g-4">
+                {% for service in services %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="service-card text-center" style="background-color: #f7f9f9; border-color: #eee;">
+                            <div class="service-icon mx-auto">
+                                <i class="bi {{ service.icon }}"></i>
+                            </div>
+                            <h2 class="h5 mb-2">{{ service.title }}</h2>
+                            <p class="text-secondary small mb-0">{{ service.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-secondary py-5">Aucun service disponible pour le moment.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="cta-section py-5">
+    <div class="container text-center py-4">
+        <h2 class="mb-3">Besoin d'un accompagnement sur-mesure ?</h2>
+        <p class="text-muted-light mb-4">Notre équipe vous conseille sur le choix et l'installation de vos équipements.</p>
+        <a href="{{ path('front_contact') }}" class="btn btn-teal btn-lg px-4">Nous contacter</a>
+    </div>
+</section>
+
+{% endblock %}

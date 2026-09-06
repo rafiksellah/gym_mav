@@ -1,0 +1,59 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block body %}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-box-seam"></i></div>
+            <div>
+                <div class="stat-value">{{ productsCount }}</div>
+                <div class="stat-label">Produits</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-tags"></i></div>
+            <div>
+                <div class="stat-value">{{ categoriesCount }}</div>
+                <div class="stat-label">Catégories</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-envelope"></i></div>
+            <div>
+                <div class="stat-value">{{ contactMessagesCount }}</div>
+                <div class="stat-label">Messages reçus {% if contactMessagesUnread > 0 %}<span class="badge bg-danger ms-1">{{ contactMessagesUnread }} non lus</span>{% endif %}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-wrench-adjustable"></i></div>
+            <div>
+                <div class="stat-value">{{ savRequestsCount }}</div>
+                <div class="stat-label">Demandes SAV {% if savRequestsUnread > 0 %}<span class="badge bg-danger ms-1">{{ savRequestsUnread }} non lues</span>{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
+            <div>
+                <div class="stat-value">{{ quoteRequestsCount }}</div>
+                <div class="stat-label">Demandes de devis {% if quoteRequestsUnread > 0 %}<span class="badge bg-danger ms-1">{{ quoteRequestsUnread }} non lues</span>{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

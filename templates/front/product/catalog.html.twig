@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue produits — {{ company_name }}{% endblock %}
+
+{% block body %}
+
+<section class="section-dark py-5" style="margin-top: 76px;">
+    <div class="container py-4">
+        <span class="section-title-eyebrow">Catalogue</span>
+        <h1 class="mt-2 mb-0">Nos équipements de fitness</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-3">
+                <form method="get" action="{{ path('front_catalog') }}" class="mb-4">
+                    <label for="q" class="form-label fw-semibold">Rechercher</label>
+                    <div class="input-group mb-4">
+                        <input type="text" id="q" name="q" class="form-control" placeholder="Nom du produit..." value="{{ search }}">
+                        <button class="btn btn-teal" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+
+                    <h6 class="fw-semibold mb-3">Catégories</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="{{ path('front_catalog', search ? {q: search} : {}) }}"
+                           class="text-decoration-none {{ not currentCategorySlug ? 'text-teal fw-semibold' : 'text-secondary' }}">
+                            Toutes les catégories
+                        </a>
+                        {% for category in categories %}
+                            <a href="{{ path('front_catalog', (search ? {q: search} : {})|merge({categorie: category.slug})) }}"
+                               class="text-decoration-none {{ currentCategorySlug == category.slug ? 'text-teal fw-semibold' : 'text-secondary' }}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="text-secondary mb-0">{{ totalItems }} produit{{ totalItems > 1 ? 's' : '' }} trouvé{{ totalItems > 1 ? 's' : '' }}</p>
+                </div>
+
+                {% if products|length > 0 %}
+                    <div class="row g-4">
+                        {% for product in products %}
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card-viefit">
+                                    <div class="card-img-wrap">
+                                        <img src="{{ product.mainImage ? asset('uploads/products/' ~ product.mainImage) : 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop' }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="p-4">
+                                        <span class="badge badge-category rounded-pill px-3 py-2 mb-2">{{ product.category.name }}</span>
+                                        <h3 class="h5 mb-2">{{ product.name }}</h3>
+                                        <p class="text-secondary small mb-3">{{ product.shortDescription }}</p>
+                                        <a href="{{ path('front_product_show', {slug: product.slug}) }}" class="btn btn-outline-teal btn-sm">Voir le produit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if totalPages > 1 %}
+                        <nav class="mt-5" aria-label="Pagination catalogue">
+                            <ul class="pagination justify-content-center">
+                                {% set baseParams = (search ? {q: search} : {})|merge(currentCategorySlug ? {categorie: currentCategorySlug} : {}) %}
+                                <li class="page-item {{ currentPage <= 1 ? 'disabled' }}">
+                                    <a class="page-link" href="{{ path('front_catalog', baseParams|merge({page: currentPage - 1})) }}">Précédent</a>
+                                </li>
+                                {% for p in 1..totalPages %}
+                                    <li class="page-item {{ p == currentPage ? 'active' }}">
+                                        <a class="page-link" href="{{ path('front_catalog', baseParams|merge({page: p})) }}">{{ p }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="page-item {{ currentPage >= totalPages ? 'disabled' }}">
+                                    <a class="page-link" href="{{ path('front_catalog', baseParams|merge({page: currentPage + 1})) }}">Suivant</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-search fs-1 text-secondary"></i>
+                        <p class="text-secondary mt-3">Aucun produit ne correspond à votre recherche.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

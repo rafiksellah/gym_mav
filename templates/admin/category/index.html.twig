@@ -1,0 +1,69 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+{% block page_title %}Catégories{% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <p class="text-secondary mb-0">{{ categories|length }} catégorie{{ categories|length > 1 ? 's' : '' }}</p>
+    <a href="{{ path('admin_category_new') }}" class="btn btn-teal">
+        <i class="bi bi-plus-lg me-1"></i> Nouvelle catégorie
+    </a>
+</div>
+
+<div class="table-responsive bg-white rounded-viefit border">
+    <table class="table align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Produits</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td style="width:70px;">
+                        {% if category.image %}
+                            <img src="{{ asset('uploads/categories/' ~ category.image) }}" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:0.35rem;">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center bg-light text-secondary" style="width:56px;height:56px;border-radius:0.35rem;">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td class="fw-semibold">{{ category.name }}</td>
+                    <td>{{ category.products|length }}</td>
+                    <td>
+                        <form method="post" action="{{ path('admin_category_toggle_active', {id: category.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('toggle-category-' ~ category.id) }}">
+                            <button type="submit" class="btn btn-sm {{ category.isActive ? 'btn-success' : 'btn-outline-secondary' }}">
+                                {{ category.isActive ? 'Active' : 'Inactive' }}
+                            </button>
+                        </form>
+                    </td>
+                    <td class="text-end">
+                        <a href="{{ path('admin_category_edit', {id: category.id}) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" action="{{ path('admin_category_delete', {id: category.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer cette catégorie ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-category-' ~ category.id) }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-secondary py-4">Aucune catégorie pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

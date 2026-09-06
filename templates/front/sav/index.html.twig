@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service Après-Vente — {{ company_name }}{% endblock %}
+
+{% block body %}
+
+<section class="section-dark py-5" style="margin-top: 76px;">
+    <div class="container py-4">
+        <span class="section-title-eyebrow">Service Après-Vente</span>
+        <h1 class="mt-2 mb-0">Maintenance, réparation et assistance technique</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card text-center" style="background-color: #f7f9f9; border-color: #eee;">
+                    <div class="service-icon mx-auto"><i class="bi bi-wrench-adjustable"></i></div>
+                    <h2 class="h5 mb-2">Maintenance préventive</h2>
+                    <p class="text-secondary small mb-0">Contrôles et entretiens réguliers pour garantir la fiabilité et la sécurité de vos machines.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card text-center" style="background-color: #f7f9f9; border-color: #eee;">
+                    <div class="service-icon mx-auto"><i class="bi bi-headset"></i></div>
+                    <h2 class="h5 mb-2">Assistance technique</h2>
+                    <p class="text-secondary small mb-0">Une équipe joignable pour diagnostiquer rapidement vos pannes et vous guider.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card text-center" style="background-color: #f7f9f9; border-color: #eee;">
+                    <div class="service-icon mx-auto"><i class="bi bi-tools"></i></div>
+                    <h2 class="h5 mb-2">Réparation</h2>
+                    <p class="text-secondary small mb-0">Intervention sur site ou en atelier avec pièces de rechange adaptées.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-dark py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="text-center mb-5">
+                    <span class="section-title-eyebrow">Demande d'intervention</span>
+                    <h2 class="mt-2">Décrivez-nous votre besoin</h2>
+                </div>
+
+                {{ form_start(form, {attr: {class: 'row g-3'}}) }}
+                    <div class="col-md-6">
+                        {{ form_label(form.firstName, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.firstName, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.firstName) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.lastName, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.lastName, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.lastName) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.phone, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.phone, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.phone) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.email, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.email, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_label(form.product, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.product, {attr: {class: 'form-select'}}) }}
+                        {{ form_errors(form.product) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_label(form.subject, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.subject, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.subject) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_label(form.message, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.message, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.message) }}
+                    </div>
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-teal px-5">Envoyer la demande</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

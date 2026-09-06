@@ -1,0 +1,44 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Devis de {{ quoteRequest.name }}{% endblock %}
+{% block page_title %}Détail de la demande de devis{% endblock %}
+
+{% block body %}
+
+<div class="bg-white rounded-viefit border p-4" style="max-width: 700px;">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Nom</dt>
+        <dd class="col-sm-9">{{ quoteRequest.name }}</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9"><a href="mailto:{{ quoteRequest.email }}">{{ quoteRequest.email }}</a></dd>
+
+        <dt class="col-sm-3">Téléphone</dt>
+        <dd class="col-sm-9">{{ quoteRequest.phone }}</dd>
+
+        <dt class="col-sm-3">Produit concerné</dt>
+        <dd class="col-sm-9">
+            {% if quoteRequest.product %}
+                <a href="{{ path('admin_product_edit', {id: quoteRequest.product.id}) }}">{{ quoteRequest.product.name }}</a>
+            {% else %}
+                —
+            {% endif %}
+        </dd>
+
+        <dt class="col-sm-3">Date</dt>
+        <dd class="col-sm-9">{{ quoteRequest.createdAt|date('d/m/Y H:i') }}</dd>
+
+        <dt class="col-sm-3">Message</dt>
+        <dd class="col-sm-9" style="white-space: pre-line;">{{ quoteRequest.message ?: '—' }}</dd>
+    </dl>
+
+    <div class="mt-4 d-flex gap-2">
+        <a href="{{ path('admin_message_quote_index') }}" class="btn btn-outline-secondary">Retour</a>
+        <form method="post" action="{{ path('admin_message_quote_delete', {id: quoteRequest.id}) }}" onsubmit="return confirm('Supprimer cette demande ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete-message-' ~ quoteRequest.id) }}">
+            <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

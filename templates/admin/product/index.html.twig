@@ -1,0 +1,81 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Produits{% endblock %}
+{% block page_title %}Produits{% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <p class="text-secondary mb-0">{{ products|length }} produit{{ products|length > 1 ? 's' : '' }}</p>
+    <a href="{{ path('admin_product_new') }}" class="btn btn-teal">
+        <i class="bi bi-plus-lg me-1"></i> Nouveau produit
+    </a>
+</div>
+
+<div class="table-responsive bg-white rounded-viefit border">
+    <table class="table align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Vedette</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td style="width:70px;">
+                        {% if product.mainImage %}
+                            <img src="{{ asset('uploads/products/' ~ product.mainImage) }}" alt="" style="width:56px;height:56px;object-fit:contain;background:#f4f6f6;border-radius:0.35rem;">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center bg-light text-secondary" style="width:56px;height:56px;border-radius:0.35rem;">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="fw-semibold">{{ product.name }}</div>
+                        <div class="text-secondary small">{{ product.reference }}</div>
+                    </td>
+                    <td>{{ product.category.name }}</td>
+                    <td>
+                        <form method="post" action="{{ path('admin_product_toggle_featured', {id: product.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('toggle-product-' ~ product.id) }}">
+                            <button type="submit" class="btn btn-sm {{ product.isFeatured ? 'btn-teal' : 'btn-outline-secondary' }}">
+                                {{ product.isFeatured ? 'Oui' : 'Non' }}
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('admin_product_toggle_active', {id: product.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('toggle-product-' ~ product.id) }}">
+                            <button type="submit" class="btn btn-sm {{ product.isActive ? 'btn-success' : 'btn-outline-secondary' }}">
+                                {{ product.isActive ? 'Actif' : 'Inactif' }}
+                            </button>
+                        </form>
+                    </td>
+                    <td class="text-end">
+                        <a href="{{ path('admin_product_edit', {id: product.id}) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" action="{{ path('admin_product_delete', {id: product.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer ce produit ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-product-' ~ product.id) }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-secondary py-4">Aucun produit pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

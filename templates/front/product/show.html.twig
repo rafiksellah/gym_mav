@@ -1,0 +1,237 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }} — {{ company_name }}{% endblock %}
+{% block meta_description %}{{ product.shortDescription ?? product.name }}{% endblock %}
+
+{% macro specIcon(label) -%}
+    {%- set l = label|lower -%}
+    {%- if 'dimension' in l -%}bi-rulers
+    {%- elseif 'poids' in l -%}bi-speedometer2
+    {%- elseif 'structure' in l or 'acier' in l -%}bi-gear-wide-connected
+    {%- elseif 'charge' in l or 'pile' in l -%}bi-battery-charging
+    {%- elseif 'capacité' in l or 'utilisateur' in l -%}bi-person-check
+    {%- elseif 'poste' in l -%}bi-diagram-3
+    {%- elseif 'poulie' in l -%}bi-arrow-repeat
+    {%- elseif 'câble' in l or 'cable' in l -%}bi-link-45deg
+    {%- elseif 'accessoire' in l -%}bi-tools
+    {%- elseif 'couleur' in l or 'coloris' in l -%}bi-palette
+    {%- elseif 'garantie' in l -%}bi-shield-check
+    {%- elseif 'finition' in l -%}bi-brush
+    {%- else -%}bi-check2-circle
+    {%- endif -%}
+{%- endmacro %}
+
+{% block body %}
+
+<section class="section-dark pb-4" style="padding-top: 6.5rem;">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="{{ path('front_home') }}" class="text-muted-light">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('front_catalog') }}" class="text-muted-light">Catalogue</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('front_catalog', {categorie: product.category.slug}) }}" class="text-muted-light">{{ product.category.name }}</a></li>
+                <li class="breadcrumb-item active text-teal">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <span class="brand-logo-lg"></span>
+            <div>
+                <div class="text-muted-light small text-uppercase" style="letter-spacing: 2px;">{{ company_name }}</div>
+                <span class="badge badge-category rounded-pill px-3 py-2">{{ product.category.name }}</span>
+            </div>
+        </div>
+        <h1 class="display-5 mb-2">{{ product.name }}</h1>
+        {% if product.shortDescription %}
+            <p class="text-teal fs-5 mb-0">{{ product.shortDescription }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section-dark pt-4 pb-5">
+    <div class="container">
+        <div class="row gy-5">
+            <div class="col-lg-6">
+                {% set allImages = [product.mainImage]|merge(product.images|map(i => i.filename))|filter(i => i is not null) %}
+                <div class="mb-3 rounded-viefit overflow-hidden border" style="border-color: var(--vf-border) !important;">
+                    <img id="mainProductImage"
+                         src="{{ product.mainImage ? asset('uploads/products/' ~ product.mainImage) : 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop' }}"
+                         alt="{{ product.name }}" class="img-fluid w-100 bg-white" style="aspect-ratio: 4/3; object-fit: contain;">
+                </div>
+                {% if allImages|length > 1 %}
+                    <div class="row g-2">
+                        {% for image in allImages %}
+                            <div class="col-3">
+                                <img src="{{ asset('uploads/products/' ~ image) }}" alt="{{ product.name }}"
+                                     class="img-fluid rounded-viefit thumb-product bg-white" style="aspect-ratio: 1/1; object-fit: contain; cursor: pointer; border: 1px solid var(--vf-border);"
+                                     onclick="document.getElementById('mainProductImage').src = this.src">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-6">
+                <span class="section-title-eyebrow">Description</span>
+                {% if product.description %}
+                    <p class="text-muted-light mt-2 mb-4" style="white-space: pre-line;">{{ product.description }}</p>
+                {% endif %}
+
+                <div class="row g-3 mb-4">
+                    {% if product.brand %}
+                        <div class="col-6">
+                            <div class="small text-muted-light">Marque</div>
+                            <div class="fw-semibold">{{ product.brand }}</div>
+                        </div>
+                    {% endif %}
+                    {% if product.reference %}
+                        <div class="col-6">
+                            <div class="small text-muted-light">Référence</div>
+                            <div class="fw-semibold">{{ product.reference }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="#devis" class="btn btn-teal px-4">Demander un devis</a>
+                    <a href="https://wa.me/{{ whatsapp_number }}?text={{ ('Bonjour, je suis intéressé par le produit : ' ~ product.name)|url_encode }}"
+                       target="_blank" rel="noopener" class="btn btn-outline-light-custom px-4">
+                        <i class="bi bi-whatsapp me-1"></i> Contacter via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if product.keyFeatures or product.technicalSpecs %}
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            {% if product.keyFeatures %}
+                <div class="col-lg-6">
+                    <div class="p-4 p-lg-5 h-100 rounded-viefit" style="background-color: #f7f9f9; border: 1px solid #eee;">
+                        <h2 class="h5 text-uppercase mb-4">Caractéristiques principales</h2>
+                        <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
+                            {% for line in product.keyFeatures|split('\n') %}
+                                {% if line|trim is not empty %}
+                                    <li class="d-flex align-items-start gap-2">
+                                        <i class="bi bi-check2-circle text-teal fs-5 flex-shrink-0"></i>
+                                        <span>{{ line|trim }}</span>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if product.technicalSpecs %}
+                <div class="{{ product.keyFeatures ? 'col-lg-6' : 'col-lg-8 mx-auto' }}">
+                    <div class="p-4 p-lg-5 h-100 rounded-viefit bg-black-2 text-white">
+                        <h2 class="h5 text-uppercase mb-4">Spécifications techniques</h2>
+                        <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
+                            {% for line in product.technicalSpecs|split('\n') %}
+                                {% if line|trim is not empty %}
+                                    {% set parts = line|split(':', 2) %}
+                                    <li class="d-flex align-items-center justify-content-between gap-3 pb-3" style="border-bottom: 1px solid var(--vf-border);">
+                                        <span class="d-flex align-items-center gap-2 text-muted-light">
+                                            <i class="bi {{ _self.specIcon(parts[0]) }} text-teal"></i>
+                                            {{ parts[0]|trim }}
+                                        </span>
+                                        {% if parts|length > 1 %}
+                                            <span class="fw-semibold text-end">{{ parts[1]|trim }}</span>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section-dark py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-title-eyebrow">Pourquoi choisir ce produit</span>
+            <h2 class="mt-2">Points forts</h2>
+        </div>
+        <div class="row g-4 text-center">
+            <div class="col-6 col-lg-2">
+                <i class="bi bi-shield-check text-teal fs-1"></i>
+                <p class="small text-muted-light mt-2 mb-0">Robustesse &amp; stabilité</p>
+            </div>
+            <div class="col-6 col-lg-2">
+                <i class="bi bi-lightning-charge text-teal fs-1"></i>
+                <p class="small text-muted-light mt-2 mb-0">Performance optimale</p>
+            </div>
+            <div class="col-6 col-lg-2">
+                <i class="bi bi-gem text-teal fs-1"></i>
+                <p class="small text-muted-light mt-2 mb-0">Matériaux haut de gamme</p>
+            </div>
+            <div class="col-6 col-lg-2">
+                <i class="bi bi-truck text-teal fs-1"></i>
+                <p class="small text-muted-light mt-2 mb-0">Livraison nationale</p>
+            </div>
+            <div class="col-6 col-lg-2">
+                <i class="bi bi-tools text-teal fs-1"></i>
+                <p class="small text-muted-light mt-2 mb-0">Installation incluse</p>
+            </div>
+            <div class="col-6 col-lg-2">
+                <i class="bi bi-headset text-teal fs-1"></i>
+                <p class="small text-muted-light mt-2 mb-0">SAV réactif</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section py-5">
+    <div class="container text-center py-3">
+        <h2 class="mb-0">{{ product.name|upper }} — <span class="text-teal">{{ company_tagline }}</span></h2>
+    </div>
+</section>
+
+<section class="py-5" id="devis">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="text-center mb-5">
+                    <span class="section-title-eyebrow">Devis rapide</span>
+                    <h2 class="mt-2">Demander un devis pour {{ product.name }}</h2>
+                </div>
+
+                {{ form_start(quoteForm, {attr: {class: 'row g-3'}}) }}
+                    <div class="col-md-6">
+                        {{ form_label(quoteForm.name, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(quoteForm.name, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(quoteForm.name) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(quoteForm.email, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(quoteForm.email, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(quoteForm.email) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(quoteForm.phone, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(quoteForm.phone, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(quoteForm.phone) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_label(quoteForm.message, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(quoteForm.message, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(quoteForm.message) }}
+                    </div>
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-teal px-5">Envoyer la demande</button>
+                    </div>
+                {{ form_end(quoteForm) }}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

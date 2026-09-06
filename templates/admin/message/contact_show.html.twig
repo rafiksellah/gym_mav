@@ -1,0 +1,38 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Message de {{ message.name }}{% endblock %}
+{% block page_title %}Détail du message{% endblock %}
+
+{% block body %}
+
+<div class="bg-white rounded-viefit border p-4" style="max-width: 700px;">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Nom</dt>
+        <dd class="col-sm-9">{{ message.name }}</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9"><a href="mailto:{{ message.email }}">{{ message.email }}</a></dd>
+
+        <dt class="col-sm-3">Téléphone</dt>
+        <dd class="col-sm-9">{{ message.phone ?: '—' }}</dd>
+
+        <dt class="col-sm-3">Sujet</dt>
+        <dd class="col-sm-9">{{ message.subject }}</dd>
+
+        <dt class="col-sm-3">Date</dt>
+        <dd class="col-sm-9">{{ message.createdAt|date('d/m/Y H:i') }}</dd>
+
+        <dt class="col-sm-3">Message</dt>
+        <dd class="col-sm-9" style="white-space: pre-line;">{{ message.message }}</dd>
+    </dl>
+
+    <div class="mt-4 d-flex gap-2">
+        <a href="{{ path('admin_message_contact_index') }}" class="btn btn-outline-secondary">Retour</a>
+        <form method="post" action="{{ path('admin_message_contact_delete', {id: message.id}) }}" onsubmit="return confirm('Supprimer ce message ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete-message-' ~ message.id) }}">
+            <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

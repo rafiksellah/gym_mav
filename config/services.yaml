@@ -1,0 +1,37 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    app.company_name: 'VicFit'
+    app.company_tagline: 'Équipements de fitness professionnels'
+    app.whatsapp_number: '213770306666'
+    app.phone_number: '0770 30 66 66'
+    app.contact_email: 'contact@vicfit.dz'
+    app.company_address: 'Zone Industrielle, Alger, Algérie'
+    app.opening_hours: 'Dim - Jeu : 9h00 - 18h00'
+    app.facebook_url: 'https://facebook.com'
+    app.instagram_url: 'https://instagram.com'
+    app.google_maps_embed_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3193.0!2d3.0588!3d36.7538!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDQ1JzEzLjciTiAzwrAwMyczMS43IkU!5e0!3m2!1sfr!2sdz!4v0000000000000'
+    app.uploads_directory: '%kernel.project_dir%/public/uploads'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            string $uploadsDirectory: '%app.uploads_directory%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
