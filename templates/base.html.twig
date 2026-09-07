@@ -96,16 +96,20 @@
                 </ul>
             </div>
             <div class="col-lg-3 col-6">
-                <h5 class="mb-3">Contact</h5>
+                <h5 class="mb-3">Direction</h5>
                 <ul class="list-unstyled d-flex flex-column gap-2">
                     <li><i class="bi bi-geo-alt text-teal me-2"></i>{{ company_address }}</li>
                     <li><i class="bi bi-telephone text-teal me-2"></i><a href="tel:+{{ whatsapp_number }}">{{ phone_number }}</a></li>
                     <li><i class="bi bi-envelope text-teal me-2"></i><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></li>
+                    <li><i class="bi bi-clock text-teal me-2"></i>{{ opening_hours }}</li>
                 </ul>
             </div>
             <div class="col-lg-3">
-                <h5 class="mb-3">Horaires</h5>
-                <p class="mb-0"><i class="bi bi-clock text-teal me-2"></i>{{ opening_hours }}</p>
+                <h5 class="mb-3">Service Technique</h5>
+                <ul class="list-unstyled d-flex flex-column gap-2">
+                    <li><i class="bi bi-telephone text-teal me-2"></i><a href="tel:+{{ technical_phone_intl }}">{{ technical_phone }}</a></li>
+                    <li><i class="bi bi-envelope text-teal me-2"></i><a href="mailto:{{ technical_email }}">{{ technical_email }}</a></li>
+                </ul>
             </div>
         </div>
         <hr class="border-secondary my-4">
