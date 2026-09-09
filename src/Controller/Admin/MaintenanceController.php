@@ -7,10 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class MaintenanceController extends AbstractController
 {
     #[Route('/admin/maintenance/toggle', name: 'admin_maintenance_toggle', methods: ['POST'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function toggle(Request $request, MaintenanceModeService $maintenanceMode): Response
     {
         if (!$this->isCsrfTokenValid('toggle-maintenance', $request->request->get('_token'))) {
