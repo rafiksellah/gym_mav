@@ -1,12 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Force HTTPS (this host terminates SSL at a proxy in front of Apache,
-    # so %{HTTPS} alone is always "off" here — check X-Forwarded-Proto too)
-    RewriteCond %{HTTPS} off
-    RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
