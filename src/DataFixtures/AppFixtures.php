@@ -20,15 +20,15 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $superAdmin = new User();
-        $superAdmin->setEmail('admin@viefit.dz');
+        $superAdmin->setEmail('superadmin@viefit-dz.com');
         $superAdmin->setRoles(['ROLE_SUPER_ADMIN']);
         $superAdmin->setPassword($this->passwordHasher->hashPassword($superAdmin, 'ViefitAdmin2026!'));
         $manager->persist($superAdmin);
 
         $clientAdmin = new User();
-        $clientAdmin->setEmail('client@viefit.dz');
+        $clientAdmin->setEmail('admin@viefit-dz.com');
         $clientAdmin->setRoles(['ROLE_ADMIN']);
-        $clientAdmin->setPassword($this->passwordHasher->hashPassword($clientAdmin, 'ViefitClient2026!'));
+        $clientAdmin->setPassword($this->passwordHasher->hashPassword($clientAdmin, 'ViefitAdmin2026!'));
         $manager->persist($clientAdmin);
 
         $categoryStations = new Category();
