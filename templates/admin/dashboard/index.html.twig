@@ -5,6 +5,34 @@
 
 {% block body %}
 
+<div class="p-4 mb-4 rounded-viefit d-flex flex-wrap justify-content-between align-items-center gap-3"
+     style="background-color: {{ maintenanceEnabled ? '#fdecea' : '#fff' }}; border: 1px solid {{ maintenanceEnabled ? '#f5c2c0' : '#e8ecec' }};">
+    <div>
+        <h2 class="h6 mb-1">
+            <i class="bi bi-cone-striped me-1"></i> Mode maintenance
+            {% if maintenanceEnabled %}
+                <span class="badge bg-danger ms-2">Site désactivé pour les visiteurs</span>
+            {% else %}
+                <span class="badge bg-success ms-2">Site en ligne</span>
+            {% endif %}
+        </h2>
+        <p class="text-secondary small mb-0">
+            {% if maintenanceEnabled %}
+                Les visiteurs voient une page "site indisponible". Toi seul peux encore accéder à cet espace admin.
+            {% else %}
+                Le site est visible publiquement. Active le mode maintenance pour le rendre inaccessible aux visiteurs (par exemple en attendant un paiement), sans rien supprimer.
+            {% endif %}
+        </p>
+    </div>
+    <form method="post" action="{{ path('admin_maintenance_toggle') }}"
+          onsubmit="return confirm('{{ maintenanceEnabled ? 'Remettre le site en ligne pour les visiteurs ?' : 'Rendre le site inaccessible aux visiteurs maintenant ?' }}');">
+        <input type="hidden" name="_token" value="{{ csrf_token('toggle-maintenance') }}">
+        <button type="submit" class="btn {{ maintenanceEnabled ? 'btn-success' : 'btn-outline-danger' }}">
+            {{ maintenanceEnabled ? 'Remettre le site en ligne' : 'Désactiver le site' }}
+        </button>
+    </form>
+</div>
+
 <div class="row g-4 mb-4">
     <div class="col-md-6 col-xl-3">
         <div class="stat-card">

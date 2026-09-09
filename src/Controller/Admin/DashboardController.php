@@ -7,6 +7,7 @@ use App\Repository\ContactMessageRepository;
 use App\Repository\ProductRepository;
 use App\Repository\QuoteRequestRepository;
 use App\Repository\SavRequestRepository;
+use App\Service\MaintenanceModeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,6 +21,7 @@ class DashboardController extends AbstractController
         ContactMessageRepository $contactMessageRepository,
         SavRequestRepository $savRequestRepository,
         QuoteRequestRepository $quoteRequestRepository,
+        MaintenanceModeService $maintenanceMode,
     ): Response {
         return $this->render('admin/dashboard/index.html.twig', [
             'productsCount' => $productRepository->count([]),
@@ -30,6 +32,7 @@ class DashboardController extends AbstractController
             'savRequestsUnread' => $savRequestRepository->countUnread(),
             'quoteRequestsCount' => $quoteRequestRepository->count([]),
             'quoteRequestsUnread' => $quoteRequestRepository->countUnread(),
+            'maintenanceEnabled' => $maintenanceMode->isEnabled(),
         ]);
     }
 }
