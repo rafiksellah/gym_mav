@@ -23,6 +23,9 @@ class InvoicePdfGenerator
             'invoice' => $invoice,
             'settings' => $settings,
             'logoDataUri' => $this->logoAsDataUri($settings),
+            'scriptFontPath' => $this->scriptFontAsDataUri(),
+            'icon' => $this->iconsMap(),
+            'ribbonDataUri' => $this->assetAsDataUri('icons/ribbon.png'),
             'amountInWords' => $this->numberToWords->convertAmount(
                 $invoice->getTotalTtc(),
                 $this->numberToWords->currencyLabel($invoice->getCurrency()),
@@ -40,6 +43,44 @@ class InvoicePdfGenerator
         $dompdf->render();
 
         return $dompdf->output();
+    }
+
+    private function scriptFontAsDataUri(): ?string
+    {
+        $path = dirname($this->uploadsDirectory).'/assets/fonts/Sacramento-Regular.ttf';
+        if (!is_file($path)) {
+            return null;
+        }
+
+        return sprintf('data:font/ttf;base64,%s', base64_encode(file_get_contents($path)));
+    }
+
+    private function assetAsDataUri(string $relativePath): ?string
+    {
+        $path = dirname($this->uploadsDirectory).'/assets/'.ltrim($relativePath, '/');
+        if (!is_file($path)) {
+            return null;
+        }
+
+        return sprintf('data:image/png;base64,%s', base64_encode(file_get_contents($path)));
+    }
+
+    /**
+     * @return array<string, ?string>
+     */
+    private function iconsMap(): array
+    {
+        $names = ['pin', 'phone', 'envelope', 'globe', 'calendar', 'building'];
+        $colors = ['navy', 'white', 'gray'];
+
+        $map = [];
+        foreach ($names as $name) {
+            foreach ($colors as $color) {
+                $map[$name.'_'.$color] = $this->assetAsDataUri("icons/{$name}-{$color}.png");
+            }
+        }
+
+        return $map;
     }
 
     private function logoAsDataUri(CompanySettings $settings): ?string

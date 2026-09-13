@@ -23,6 +23,9 @@ class CompanySettings
     private ?string $tagline = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slogan = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $logoFilename = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -105,6 +108,18 @@ class CompanySettings
     public function setTagline(?string $tagline): static
     {
         $this->tagline = $tagline;
+
+        return $this;
+    }
+
+    public function getSlogan(): ?string
+    {
+        return $this->slogan;
+    }
+
+    public function setSlogan(?string $slogan): static
+    {
+        $this->slogan = $slogan;
 
         return $this;
     }

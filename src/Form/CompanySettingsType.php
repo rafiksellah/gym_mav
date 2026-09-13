@@ -24,6 +24,11 @@ class CompanySettingsType extends AbstractType
                 'label' => 'Slogan / activité',
                 'required' => false,
             ])
+            ->add('slogan', TextType::class, [
+                'label' => "Phrase d'accroche (style script)",
+                'required' => false,
+                'help' => 'Affichée en italique sous le slogan, ex : "Votre partenaire pour une meilleure performance".',
+            ])
             ->add('logoFile', FileType::class, [
                 'label' => 'Logo',
                 'mapped' => false,
