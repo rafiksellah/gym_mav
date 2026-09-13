@@ -9,12 +9,19 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class InvoiceExcelExporter
 {
     private const NAVY = '1B3A63';
     private const LIGHT_GRAY = 'F2F4F6';
+
+    public function __construct(
+        private readonly NumberToFrenchWordsConverter $numberToWords,
+        private readonly string $uploadsDirectory,
+    ) {
+    }
 
     public function build(Invoice $invoice, CompanySettings $settings): Spreadsheet
     {
@@ -29,6 +36,17 @@ class InvoiceExcelExporter
         $sheet->getColumnDimension('E')->setWidth(18);
 
         $row = 1;
+
+        $logoPath = $this->logoPath($settings);
+        if ($logoPath) {
+            $drawing = new Drawing();
+            $drawing->setPath($logoPath);
+            $drawing->setHeight(70);
+            $drawing->setCoordinates('A1');
+            $drawing->setWorksheet($sheet);
+            $sheet->getRowDimension(1)->setRowHeight(55);
+            $row = 6;
+        }
 
         $sheet->setCellValue("A{$row}", $settings->getName());
         $sheet->mergeCells("A{$row}:C{$row}");
@@ -128,8 +146,16 @@ class InvoiceExcelExporter
         $sheet->getStyle("E{$row}")->getNumberFormat()->setFormatCode('#,##0.00');
         $row += 2;
 
+        $amountInWords = $this->numberToWords->convertAmount(
+            $invoice->getTotalTtc(),
+            $this->numberToWords->currencyLabel($invoice->getCurrency()),
+        );
         $sheet->setCellValue("A{$row}", 'Arrêtée la somme de :');
         $sheet->getStyle("A{$row}")->getFont()->setItalic(true);
+        ++$row;
+        $sheet->setCellValue("A{$row}", $amountInWords.' en TTC.');
+        $sheet->mergeCells("A{$row}:E{$row}");
+        $sheet->getStyle("A{$row}")->getFont()->setBold(true)->setItalic(true)->setColor(new Color(self::NAVY));
         ++$row;
 
         if ($settings->getPaymentTerms()) {
@@ -146,5 +172,17 @@ class InvoiceExcelExporter
     {
         $writer = new Xlsx($spreadsheet);
         $writer->save($path);
+    }
+
+    private function logoPath(CompanySettings $settings): ?string
+    {
+        $filename = $settings->getLogoFilename();
+        if (!$filename) {
+            return null;
+        }
+
+        $path = rtrim($this->uploadsDirectory, '/').'/company/'.$filename;
+
+        return is_file($path) ? $path : null;
     }
 }

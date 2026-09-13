@@ -25,7 +25,7 @@ class InvoicePdfGenerator
             'logoDataUri' => $this->logoAsDataUri($settings),
             'amountInWords' => $this->numberToWords->convertAmount(
                 $invoice->getTotalTtc(),
-                $this->currencyLabel($invoice->getCurrency()),
+                $this->numberToWords->currencyLabel($invoice->getCurrency()),
             ),
         ]);
 
@@ -62,15 +62,5 @@ class InvoicePdfGenerator
         };
 
         return sprintf('data:%s;base64,%s', $mimeType, base64_encode(file_get_contents($path)));
-    }
-
-    private function currencyLabel(string $currency): string
-    {
-        return match (strtoupper($currency)) {
-            'DA', 'DZD' => 'dinar',
-            'EUR', '€' => 'euro',
-            'USD', '$' => 'dollar',
-            default => $currency,
-        };
     }
 }

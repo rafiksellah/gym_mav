@@ -13,6 +13,16 @@ class NumberToFrenchWordsConverter
     private const TEENS = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'];
     private const TENS = ['', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix', 'quatre-vingt', 'quatre-vingt-dix'];
 
+    public function currencyLabel(string $currency): string
+    {
+        return match (strtoupper($currency)) {
+            'DA', 'DZD' => 'dinar',
+            'EUR', '€' => 'euro',
+            'USD', '$' => 'dollar',
+            default => $currency,
+        };
+    }
+
     public function convertAmount(float $amount, string $currencyName = 'dinar', string $centsLabel = 'cts'): string
     {
         $amount = round($amount, 2);
