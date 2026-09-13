@@ -1,0 +1,244 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ isNew ? 'Nouvelle facture' : 'Modifier ' ~ invoice.number }}{% endblock %}
+{% block page_title %}{{ isNew ? 'Nouvelle facture' : 'Modifier la facture' }}{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block stylesheets %}
+<style>
+    #lines-table td { vertical-align: middle; padding: 0.4rem; }
+    #lines-table th { font-size: 0.8rem; white-space: nowrap; }
+    #lines-table .form-control, #lines-table .form-select { font-size: 0.85rem; }
+    #lines-table input[type=number] { text-align: right; }
+    .invoice-summary-box { position: sticky; top: 1rem; }
+    .invoice-summary-row { display: flex; justify-content: space-between; padding: 0.35rem 0; }
+    .invoice-summary-row.total { font-weight: 700; font-size: 1.1rem; border-top: 2px solid #12181b; margin-top: 0.4rem; padding-top: 0.6rem; }
+</style>
+{% endblock %}
+
+{% block body %}
+
+{{ form_start(form, {attr: {novalidate: 'novalidate', id: 'invoice-form'}}) }}
+
+<div class="row g-4">
+    <div class="col-lg-9">
+        <div class="bg-white rounded-viefit border p-4 mb-4">
+            <h6 class="text-uppercase text-secondary small fw-bold mb-3">Informations générales</h6>
+            <div class="row g-3">
+                <div class="col-md-3">{{ form_row(form.number) }}</div>
+                <div class="col-md-3">{{ form_row(form.invoiceDate) }}</div>
+                <div class="col-md-3">{{ form_row(form.dueDate) }}</div>
+                <div class="col-md-3">{{ form_row(form.currency) }}</div>
+                <div class="col-md-6">{{ form_row(form.client) }}</div>
+                <div class="col-md-6">{{ form_row(form.paymentMethod) }}</div>
+                <div class="col-md-6">{{ form_row(form.reference) }}</div>
+                <div class="col-md-6">{{ form_row(form.purchaseOrder) }}</div>
+                <div class="col-12">{{ form_row(form.notes) }}</div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-viefit border p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="text-uppercase text-secondary small fw-bold mb-0">Lignes de facture</h6>
+                <button type="button" id="add-line-btn" class="btn btn-sm btn-teal">
+                    <i class="bi bi-plus-lg me-1"></i> Ajouter une ligne
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-sm mb-0" id="lines-table">
+                    <thead>
+                        <tr>
+                            <th style="width:26%;">Désignation</th>
+                            <th style="width:12%;">Référence</th>
+                            <th style="width:8%;">Qté</th>
+                            <th style="width:9%;">Unité</th>
+                            <th style="width:11%;">P.U HT</th>
+                            <th style="width:8%;">Remise %</th>
+                            <th style="width:8%;">TVA %</th>
+                            <th style="width:11%;" class="text-end">Total TTC</th>
+                            <th style="width:7%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lines-body"
+                           data-prototype="{{ _self.line_row(form.lines.vars.prototype)|e('html_attr') }}"
+                           data-next-index="{{ form.lines|length }}">
+                        {% for lineForm in form.lines %}
+                            {{ _self.line_row(lineForm) }}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-secondary small mt-2 mb-0" id="no-lines-message" style="display:none;">Ajoutez au moins une ligne à la facture.</p>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="bg-white rounded-viefit border p-4 invoice-summary-box">
+            <h6 class="text-uppercase text-secondary small fw-bold mb-3">Totaux</h6>
+            <div class="invoice-summary-row">
+                <span class="text-secondary">Sous-total HT</span>
+                <span id="summary-subtotal">0,00</span>
+            </div>
+            <div class="invoice-summary-row">
+                <span class="text-secondary">Remise</span>
+                <span id="summary-discount">0,00</span>
+            </div>
+            <div class="invoice-summary-row">
+                <span class="text-secondary">Total HT</span>
+                <span id="summary-total-ht">0,00</span>
+            </div>
+            <div class="invoice-summary-row">
+                <span class="text-secondary">TVA</span>
+                <span id="summary-vat">0,00</span>
+            </div>
+            <div class="invoice-summary-row total">
+                <span>Total TTC</span>
+                <span id="summary-total-ttc">0,00</span>
+            </div>
+
+            <div class="mt-4 d-flex flex-column gap-2">
+                <button type="submit" class="btn btn-teal">Enregistrer</button>
+                <a href="{{ isNew ? path('admin_invoice_index') : path('admin_invoice_show', {id: invoice.id}) }}" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+{% macro line_row(lineForm) %}
+    <tr class="line-row">
+        <td>{{ form_widget(lineForm.description) }}{{ form_errors(lineForm.description) }}</td>
+        <td>{{ form_widget(lineForm.reference) }}</td>
+        <td>{{ form_widget(lineForm.quantity) }}</td>
+        <td>{{ form_widget(lineForm.unit) }}</td>
+        <td>{{ form_widget(lineForm.unitPriceHt) }}</td>
+        <td>{{ form_widget(lineForm.discountPercent) }}</td>
+        <td>{{ form_widget(lineForm.vatRate) }}</td>
+        <td class="text-end fw-semibold js-line-total-ttc">0,00</td>
+        <td class="text-nowrap text-end">
+            {{ form_widget(lineForm.position) }}
+            <button type="button" class="btn btn-sm btn-link text-secondary p-1 js-move-up" title="Monter"><i class="bi bi-arrow-up"></i></button>
+            <button type="button" class="btn btn-sm btn-link text-secondary p-1 js-move-down" title="Descendre"><i class="bi bi-arrow-down"></i></button>
+            <button type="button" class="btn btn-sm btn-link text-danger p-1 js-remove-line" title="Supprimer"><i class="bi bi-trash"></i></button>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+(function () {
+    const linesBody = document.getElementById('lines-body');
+    const addBtn = document.getElementById('add-line-btn');
+    const noLinesMessage = document.getElementById('no-lines-message');
+    let nextIndex = parseInt(linesBody.dataset.nextIndex, 10) || 0;
+
+    function toNumber(input) {
+        const value = parseFloat(input && input.value ? input.value.replace(',', '.') : '0');
+        return isNaN(value) ? 0 : value;
+    }
+
+    function formatMoney(value) {
+        return value.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function recalculate() {
+        let subtotal = 0, discountTotal = 0, vatTotal = 0;
+
+        linesBody.querySelectorAll('tr.line-row').forEach(function (row) {
+            const qty = toNumber(row.querySelector('.js-line-qty'));
+            const price = toNumber(row.querySelector('.js-line-price'));
+            const discountPct = toNumber(row.querySelector('.js-line-discount'));
+            const vatPct = toNumber(row.querySelector('.js-line-vat'));
+
+            const gross = qty * price;
+            const discountAmount = gross * (discountPct / 100);
+            const totalHt = gross - discountAmount;
+            const vatAmount = totalHt * (vatPct / 100);
+            const totalTtc = totalHt + vatAmount;
+
+            subtotal += gross;
+            discountTotal += discountAmount;
+            vatTotal += vatAmount;
+
+            const totalCell = row.querySelector('.js-line-total-ttc');
+            if (totalCell) {
+                totalCell.textContent = formatMoney(totalTtc);
+            }
+        });
+
+        const totalHt = subtotal - discountTotal;
+        const totalTtc = totalHt + vatTotal;
+
+        document.getElementById('summary-subtotal').textContent = formatMoney(subtotal);
+        document.getElementById('summary-discount').textContent = formatMoney(discountTotal);
+        document.getElementById('summary-total-ht').textContent = formatMoney(totalHt);
+        document.getElementById('summary-vat').textContent = formatMoney(vatTotal);
+        document.getElementById('summary-total-ttc').textContent = formatMoney(totalTtc);
+
+        noLinesMessage.style.display = linesBody.querySelectorAll('tr.line-row').length === 0 ? '' : 'none';
+    }
+
+    function addLine() {
+        const template = linesBody.dataset.prototype.replace(/__line__/g, nextIndex);
+        const wrapper = document.createElement('tbody');
+        wrapper.innerHTML = template;
+        const newRow = wrapper.querySelector('tr.line-row');
+        linesBody.appendChild(newRow);
+        nextIndex++;
+        recalculate();
+    }
+
+    linesBody.addEventListener('input', function (event) {
+        if (event.target.matches('.js-line-qty, .js-line-price, .js-line-discount, .js-line-vat')) {
+            recalculate();
+        }
+    });
+
+    linesBody.addEventListener('click', function (event) {
+        const removeBtn = event.target.closest('.js-remove-line');
+        if (removeBtn) {
+            const row = removeBtn.closest('tr.line-row');
+            if (linesBody.querySelectorAll('tr.line-row').length > 1) {
+                row.remove();
+                recalculate();
+            } else {
+                row.querySelectorAll('input').forEach(function (input) {
+                    if (input.type === 'number') { input.value = input.step === '0.001' ? '1' : '0'; }
+                    else if (input.type !== 'hidden') { input.value = ''; }
+                });
+                recalculate();
+            }
+            return;
+        }
+
+        const upBtn = event.target.closest('.js-move-up');
+        if (upBtn) {
+            const row = upBtn.closest('tr.line-row');
+            const previous = row.previousElementSibling;
+            if (previous) {
+                linesBody.insertBefore(row, previous);
+            }
+            return;
+        }
+
+        const downBtn = event.target.closest('.js-move-down');
+        if (downBtn) {
+            const row = downBtn.closest('tr.line-row');
+            const next = row.nextElementSibling;
+            if (next) {
+                linesBody.insertBefore(next, row);
+            }
+        }
+    });
+
+    addBtn.addEventListener('click', addLine);
+
+    recalculate();
+})();
+</script>
+{% endblock %}

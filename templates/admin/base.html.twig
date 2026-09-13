@@ -41,6 +41,18 @@
                 {% set unreadCount = admin_unread_messages_count() %}
                 {% if unreadCount > 0 %}<span class="badge bg-danger ms-auto">{{ unreadCount }}</span>{% endif %}
             </a>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <hr class="text-secondary my-2">
+                <a href="{{ path('admin_invoice_index') }}" class="admin-nav-link {{ app.current_route starts with 'admin_invoice' ? 'active' }}">
+                    <i class="bi bi-receipt"></i> Factures
+                </a>
+                <a href="{{ path('admin_client_index') }}" class="admin-nav-link {{ app.current_route starts with 'admin_client' ? 'active' }}">
+                    <i class="bi bi-people"></i> Clients
+                </a>
+                <a href="{{ path('admin_company_settings') }}" class="admin-nav-link {{ app.current_route == 'admin_company_settings' ? 'active' }}">
+                    <i class="bi bi-gear"></i> Paramètres facturation
+                </a>
+            {% endif %}
         </nav>
         <div class="admin-sidebar-footer">
             <a href="{{ path('front_home') }}" class="admin-nav-link" target="_blank">

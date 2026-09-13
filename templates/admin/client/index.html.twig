@@ -1,0 +1,65 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+{% block page_title %}Clients{% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
+    <form method="get" class="d-flex gap-2">
+        <input type="search" name="q" value="{{ search }}" class="form-control" placeholder="Rechercher un client (nom, email, téléphone)..." style="min-width:320px;">
+        <button type="submit" class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
+    </form>
+    <a href="{{ path('admin_client_new') }}" class="btn btn-teal">
+        <i class="bi bi-plus-lg me-1"></i> Nouveau client
+    </a>
+</div>
+
+<div class="table-responsive bg-white rounded-viefit border">
+    <table class="table align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Nom / raison sociale</th>
+                <th>Contact</th>
+                <th>NIF / RC</th>
+                <th class="text-end">Factures</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>
+                        <div class="fw-semibold">{{ client.fullName }}</div>
+                        {% if client.address %}<div class="text-secondary small">{{ client.address|length > 60 ? client.address|slice(0, 60) ~ '…' : client.address }}</div>{% endif %}
+                    </td>
+                    <td>
+                        {% if client.email %}<div class="small">{{ client.email }}</div>{% endif %}
+                        {% if client.phone %}<div class="small text-secondary">{{ client.phone }}</div>{% endif %}
+                    </td>
+                    <td class="small text-secondary">
+                        {{ client.nif }}{% if client.nif and client.rc %}<br>{% endif %}{{ client.rc }}
+                    </td>
+                    <td class="text-end">{{ client.invoices|length }}</td>
+                    <td class="text-end">
+                        <a href="{{ path('admin_client_edit', {id: client.id}) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" action="{{ path('admin_client_delete', {id: client.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer ce client ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-client-' ~ client.id) }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-secondary py-4">Aucun client pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Paramètres de facturation{% endblock %}
+{% block page_title %}Paramètres de facturation{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+<div class="bg-white rounded-viefit border p-4" style="max-width: 1000px;">
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+        <h6 class="text-uppercase text-secondary small fw-bold mb-3">Identité</h6>
+        <div class="row g-3 mb-4">
+            <div class="col-md-8">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.tagline) }}
+            </div>
+            <div class="col-md-6">
+                {% if settings.logoFilename %}
+                    <div class="mb-2">
+                        <img src="{{ asset('uploads/company/' ~ settings.logoFilename) }}" alt="Logo" style="max-width:160px;max-height:100px;object-fit:contain;background:#f4f6f6;border-radius:0.35rem;padding:0.5rem;">
+                    </div>
+                {% endif %}
+                {{ form_row(form.logoFile) }}
+            </div>
+        </div>
+
+        <h6 class="text-uppercase text-secondary small fw-bold mb-3">Coordonnées</h6>
+        <div class="row g-3 mb-4">
+            <div class="col-12">
+                {{ form_row(form.address) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.phone) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.email) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.website) }}
+            </div>
+        </div>
+
+        <h6 class="text-uppercase text-secondary small fw-bold mb-3">Informations légales</h6>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                {{ form_row(form.nif) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.nis) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.rc) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.ai) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.rib) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.capitalSocial) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.bankInfo) }}
+            </div>
+        </div>
+
+        <h6 class="text-uppercase text-secondary small fw-bold mb-3">Facturation</h6>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                {{ form_row(form.defaultVatRate) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.defaultCurrency) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.invoiceNumberPrefix) }}
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Prochain numéro</label>
+                <input type="text" class="form-control" value="{{ settings.lastInvoiceSequence + 1 }}{{ settings.invoiceNumberPrefix ? '/' ~ settings.invoiceNumberPrefix : '' }}/{{ 'now'|date('y') }}" disabled>
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.paymentTerms) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.legalMentions) }}
+            </div>
+        </div>
+
+        <div class="mt-2 d-flex gap-2">
+            <button type="submit" class="btn btn-teal px-4">Enregistrer</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

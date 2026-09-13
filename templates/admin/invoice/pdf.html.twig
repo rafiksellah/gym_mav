@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Facture {{ invoice.number }}</title>
+<style>
+    @page { margin: 12mm 14mm; }
+
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'DejaVu Sans', sans-serif;
+        color: #1c2733;
+        font-size: 10.5px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navy { color: #17335c; }
+    .red { color: #b5352c; }
+
+    table { border-collapse: collapse; width: 100%; }
+
+    /* ---------- Header ---------- */
+    .header-table td { vertical-align: top; }
+
+    .company-block { width: 58%; padding-right: 10px; }
+
+    .logo-img { max-width: 150px; max-height: 95px; margin-bottom: 6px; }
+
+    .company-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #17335c;
+        letter-spacing: 0.5px;
+        margin: 2px 0 1px;
+    }
+
+    .company-tagline {
+        font-size: 11px;
+        font-weight: bold;
+        color: #17335c;
+        margin-bottom: 2px;
+    }
+
+    .company-tagline .red { color: #b5352c; }
+
+    .company-slogan {
+        font-size: 9px;
+        font-style: italic;
+        color: #55606b;
+    }
+
+    .contact-panel {
+        background-color: #17335c;
+        color: #ffffff;
+        padding: 10px 14px;
+        border-radius: 4px;
+        border-top: 4px solid #b5352c;
+    }
+
+    .contact-row {
+        font-size: 9.5px;
+        padding: 2px 0;
+    }
+
+    .contact-row .bullet {
+        display: inline-block;
+        width: 14px;
+        font-weight: bold;
+    }
+
+    .legal-block {
+        border-top: 1px solid rgba(255,255,255,0.35);
+        margin-top: 6px;
+        padding-top: 6px;
+        font-size: 8.3px;
+        line-height: 1.5;
+    }
+
+    /* ---------- Client / Facture / Date band ---------- */
+    .meta-table { margin-top: 14px; }
+
+    .meta-table td {
+        vertical-align: top;
+        border-top: 2px solid #17335c;
+        border-bottom: 2px solid #17335c;
+        padding: 10px 12px;
+    }
+
+    .client-cell { width: 42%; border-right: 1px solid #d7dce2; }
+
+    .client-label {
+        font-size: 10px;
+        font-weight: bold;
+        color: #17335c;
+        text-transform: uppercase;
+        border-bottom: 1px solid #c7ccd2;
+        padding-bottom: 4px;
+        margin-bottom: 5px;
+    }
+
+    .client-name { font-size: 11px; font-weight: bold; margin-bottom: 3px; }
+    .client-line { font-size: 9.5px; color: #444; }
+
+    .facture-cell { width: 34%; text-align: center; border-right: 1px solid #d7dce2; }
+
+    .facture-title {
+        font-size: 26px;
+        font-weight: bold;
+        color: #17335c;
+        letter-spacing: 2px;
+        margin-bottom: 6px;
+    }
+
+    .facture-number {
+        display: inline-block;
+        background-color: #17335c;
+        color: #fff;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 4px 14px;
+        border-radius: 3px;
+    }
+
+    .date-cell { width: 24%; text-align: right; }
+    .date-label { font-size: 8.5px; color: #55606b; text-transform: uppercase; margin-bottom: 3px; }
+    .date-value { font-size: 12px; font-weight: bold; color: #17335c; }
+
+    /* ---------- Lines table ---------- */
+    .lines-table { margin-top: 16px; }
+
+    .lines-table thead th {
+        background-color: #17335c;
+        color: #fff;
+        font-size: 9.5px;
+        text-transform: uppercase;
+        padding: 7px 8px;
+        text-align: left;
+    }
+
+    .lines-table thead th.num { text-align: center; width: 6%; }
+    .lines-table thead th.qty { text-align: center; width: 9%; }
+    .lines-table thead th.pu { text-align: right; width: 17%; }
+    .lines-table thead th.montant { text-align: right; width: 18%; }
+
+    .lines-table tbody td {
+        padding: 7px 8px;
+        font-size: 9.8px;
+        border-bottom: 1px solid #e7eaee;
+    }
+
+    .lines-table tbody tr.odd { background-color: #ffffff; }
+    .lines-table tbody tr.even { background-color: #f2f4f7; }
+
+    .lines-table td.num { text-align: center; color: #55606b; }
+    .lines-table td.qty { text-align: center; }
+    .lines-table td.pu, .lines-table td.montant { text-align: right; }
+    .lines-table td.montant { font-weight: bold; }
+
+    /* ---------- Totals ---------- */
+    .totals-wrap { width: 100%; margin-top: 4px; }
+    .totals-table { width: 46%; float: right; }
+
+    .totals-table td {
+        padding: 6px 12px;
+        font-size: 10px;
+        border-bottom: 1px solid #e7eaee;
+    }
+
+    .totals-table td.label { color: #444; }
+    .totals-table td.value { text-align: right; font-weight: bold; }
+
+    .totals-table tr.grand-total td {
+        background-color: #17335c;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        border-bottom: none;
+    }
+
+    .amount-words {
+        clear: both;
+        padding-top: 26px;
+    }
+
+    .amount-words .label { font-size: 9.5px; color: #333; }
+    .amount-words .value {
+        font-size: 11px;
+        font-weight: bold;
+        font-style: italic;
+        color: #17335c;
+        margin-top: 3px;
+    }
+
+    .payment-block {
+        margin-top: 18px;
+        font-size: 9px;
+        color: #55606b;
+    }
+
+    .payment-block strong { color: #17335c; }
+
+    /* ---------- Footer ---------- */
+    .invoice-footer {
+        position: fixed;
+        bottom: -4mm;
+        left: -14mm;
+        right: -14mm;
+        background-color: #17335c;
+        color: #fff;
+        font-size: 8.6px;
+        padding: 8px 14mm;
+    }
+
+    .invoice-footer table td { text-align: center; color: #fff; border-left: 1px solid rgba(255,255,255,0.3); }
+    .invoice-footer table td:first-child { border-left: none; }
+</style>
+</head>
+<body>
+
+<table class="header-table">
+    <tr>
+        <td class="company-block">
+            {% if logoDataUri %}
+                <img src="{{ logoDataUri }}" class="logo-img" alt="Logo">
+            {% endif %}
+            <div class="company-name">{{ settings.name }}</div>
+            {% if settings.tagline %}
+                <div class="company-tagline">{{ settings.tagline|replace({'|': ' <span class="red">|</span> '})|raw }}</div>
+            {% endif %}
+        </td>
+        <td>
+            <div class="contact-panel">
+                {% if settings.address %}<div class="contact-row"><span class="bullet">&#9679;</span>{{ settings.address }}</div>{% endif %}
+                {% if settings.phone %}<div class="contact-row"><span class="bullet">&#9742;</span>Tél. : {{ settings.phone }}</div>{% endif %}
+                {% if settings.email %}<div class="contact-row"><span class="bullet">&#9993;</span>Email : {{ settings.email }}</div>{% endif %}
+                {% if settings.website %}<div class="contact-row"><span class="bullet">&#127760;</span>{{ settings.website }}</div>{% endif %}
+
+                <div class="legal-block">
+                    {% if settings.rc or settings.ai %}RC : {{ settings.rc }}{% if settings.ai %} &nbsp;|&nbsp; AI : {{ settings.ai }}{% endif %}<br>{% endif %}
+                    {% if settings.nif or settings.nis %}NIF N° : {{ settings.nif }}{% if settings.nis %} &nbsp;|&nbsp; NIS N° : {{ settings.nis }}{% endif %}<br>{% endif %}
+                    {% if settings.capitalSocial %}Capital social : {{ settings.capitalSocial }}<br>{% endif %}
+                    {% if settings.rib %}RIB : {{ settings.rib }}<br>{% endif %}
+                    {% if settings.bankInfo %}{{ settings.bankInfo }}{% endif %}
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<table class="meta-table">
+    <tr>
+        <td class="client-cell">
+            <div class="client-label">Client</div>
+            <div class="client-name">{{ invoice.client.fullName }}</div>
+            {% if invoice.client.address %}<div class="client-line">{{ invoice.client.address }}</div>{% endif %}
+            <div class="client-line">{{ invoice.client.email ?: '—' }}</div>
+            <div class="client-line">{{ invoice.client.phone ?: '—' }}</div>
+            {% if invoice.reference %}<div class="client-line" style="margin-top:4px;">Réf. : {{ invoice.reference }}</div>{% endif %}
+            {% if invoice.purchaseOrder %}<div class="client-line">Bon de commande : {{ invoice.purchaseOrder }}</div>{% endif %}
+        </td>
+        <td class="facture-cell">
+            <div class="facture-title">FACTURE</div>
+            <div class="facture-number">N° {{ invoice.number }}</div>
+        </td>
+        <td class="date-cell">
+            <div class="date-label">Date d'émission</div>
+            <div class="date-value">{{ invoice.invoiceDate ? invoice.invoiceDate|date('d/m/Y') : '' }}</div>
+            {% if invoice.dueDate %}
+                <div class="date-label" style="margin-top:8px;">Échéance</div>
+                <div class="date-value">{{ invoice.dueDate|date('d/m/Y') }}</div>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<table class="lines-table">
+    <thead>
+        <tr>
+            <th class="num">N°</th>
+            <th>Désignation</th>
+            <th class="qty">Qté</th>
+            <th class="pu">P.U ({{ invoice.currency }})</th>
+            <th class="montant">Montant ({{ invoice.currency }})</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in invoice.lines %}
+            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                <td class="num">{{ loop.index }}</td>
+                <td>
+                    {{ line.description }}
+                    {% if line.discountPercent > 0 %}<br><span style="font-size:8px;color:#888;">Remise {{ line.discountPercent|invoice_qty }}%</span>{% endif %}
+                </td>
+                <td class="qty">{{ line.quantity|invoice_qty }}{% if line.unit %} {{ line.unit }}{% endif %}</td>
+                <td class="pu">{{ line.unitPriceHt|invoice_money }}</td>
+                <td class="montant">{{ line.totalHt|invoice_money }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="totals-wrap">
+    <table class="totals-table">
+        <tr>
+            <td class="label">TOTAL / H.T</td>
+            <td class="value">{{ invoice.totalHt|invoice_money }}</td>
+        </tr>
+        {% if invoice.totalDiscount > 0 %}
+        <tr>
+            <td class="label">REMISE</td>
+            <td class="value">{{ invoice.totalDiscount|invoice_money }}</td>
+        </tr>
+        {% endif %}
+        {% for rate, breakdown in invoice.vatBreakdown %}
+        <tr>
+            <td class="label">T.V.A / {{ rate|number_format(0) }} %</td>
+            <td class="value">{{ breakdown.amount|invoice_money }}</td>
+        </tr>
+        {% endfor %}
+        <tr class="grand-total">
+            <td class="label">TOTAL / T.T.C</td>
+            <td class="value">{{ invoice.totalTtc|invoice_money }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="amount-words">
+    <div class="label">Arrêtée la somme de :</div>
+    <div class="value">{{ amountInWords }} en TTC.</div>
+</div>
+
+{% if invoice.paymentMethod or settings.paymentTerms or settings.legalMentions %}
+<div class="payment-block">
+    {% if invoice.paymentMethod %}<div><strong>Mode de paiement :</strong> {{ invoice.paymentMethod }}</div>{% endif %}
+    {% if settings.paymentTerms %}<div style="margin-top:4px;">{{ settings.paymentTerms }}</div>{% endif %}
+    {% if settings.legalMentions %}<div style="margin-top:6px;font-style:italic;">{{ settings.legalMentions }}</div>{% endif %}
+    {% if invoice.notes %}<div style="margin-top:6px;">{{ invoice.notes }}</div>{% endif %}
+</div>
+{% endif %}
+
+<div class="invoice-footer">
+    <table>
+        <tr>
+            {% if settings.phone %}<td>&#9742; {{ settings.phone }}</td>{% endif %}
+            {% if settings.email %}<td>&#9993; {{ settings.email }}</td>{% endif %}
+            {% if settings.website %}<td>&#127760; {{ settings.website }}</td>{% endif %}
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

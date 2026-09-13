@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ isNew ? 'Nouveau client' : 'Modifier ' ~ client.fullName }}{% endblock %}
+{% block page_title %}{{ isNew ? 'Nouveau client' : 'Modifier le client' }}{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+<div class="bg-white rounded-viefit border p-4" style="max-width: 800px;">
+    {{ form_start(form) }}
+        <div class="row g-3">
+            <div class="col-md-8">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.firstName) }}
+            </div>
+            <div class="col-12">
+                {{ form_row(form.address) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.phone) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.email) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.nif) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.nis) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.rc) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.ai) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.rib) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.notes) }}
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-teal px-4">Enregistrer</button>
+            <a href="{{ path('admin_client_index') }}" class="btn btn-outline-secondary">Annuler</a>
+        </div>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
