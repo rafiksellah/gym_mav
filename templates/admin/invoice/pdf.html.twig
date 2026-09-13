@@ -284,7 +284,7 @@
             <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                 <td class="num">{{ loop.index }}</td>
                 <td>{{ line.description }}</td>
-                <td class="qty">{{ line.quantity|invoice_qty }}{% if line.unit %} {{ line.unit }}{% endif %}</td>
+                <td class="qty">{{ line.quantity|invoice_qty }}</td>
                 <td class="pu">{{ line.unitPriceHt|invoice_money }}</td>
                 <td class="montant">{{ line.lineTotal|invoice_money }}</td>
             </tr>

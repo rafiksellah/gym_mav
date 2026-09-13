@@ -72,7 +72,7 @@
             {% for line in invoice.lines %}
                 <tr>
                     <td>{{ line.description }}</td>
-                    <td class="text-end">{{ line.quantity|invoice_qty }}{% if line.unit %} {{ line.unit }}{% endif %}</td>
+                    <td class="text-end">{{ line.quantity|invoice_qty }}</td>
                     <td class="text-end">{{ line.unitPriceHt|invoice_money }}</td>
                     <td class="text-end fw-semibold">{{ line.lineTotal|invoice_money }} {{ invoice.currency }}</td>
                 </tr>

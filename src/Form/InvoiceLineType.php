@@ -25,11 +25,6 @@ class InvoiceLineType extends AbstractType
                 'scale' => 3,
                 'attr' => ['step' => '0.001', 'min' => 0, 'class' => 'js-line-qty'],
             ])
-            ->add('unit', TextType::class, [
-                'label' => 'Unité',
-                'required' => false,
-                'attr' => ['class' => 'js-line-unit'],
-            ])
             ->add('unitPriceHt', NumberType::class, [
                 'label' => 'P.U HT',
                 'html5' => true,

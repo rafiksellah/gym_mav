@@ -27,9 +27,6 @@ class InvoiceLine
     #[Assert\Positive(message: 'La quantité doit être positive.')]
     private string $quantity = '1.000';
 
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $unit = 'unité';
-
     #[ORM\Column(type: Types::DECIMAL, precision: 14, scale: 2)]
     #[Assert\NotNull]
     #[Assert\PositiveOrZero(message: 'Le prix unitaire doit être positif ou nul.')]
@@ -75,18 +72,6 @@ class InvoiceLine
     public function setQuantity(string $quantity): static
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getUnit(): ?string
-    {
-        return $this->unit;
-    }
-
-    public function setUnit(?string $unit): static
-    {
-        $this->unit = $unit;
 
         return $this;
     }
