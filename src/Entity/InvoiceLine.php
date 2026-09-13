@@ -38,16 +38,6 @@ class InvoiceLine
     #[Assert\PositiveOrZero(message: 'Le prix unitaire doit être positif ou nul.')]
     private string $unitPriceHt = '0.00';
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    #[Assert\NotNull]
-    #[Assert\Range(min: 0, max: 100)]
-    private string $discountPercent = '0.00';
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    #[Assert\NotNull]
-    #[Assert\Range(min: 0, max: 100)]
-    private string $vatRate = '19.00';
-
     #[ORM\Column]
     private int $position = 0;
 
@@ -128,30 +118,6 @@ class InvoiceLine
         return $this;
     }
 
-    public function getDiscountPercent(): string
-    {
-        return $this->discountPercent;
-    }
-
-    public function setDiscountPercent(string $discountPercent): static
-    {
-        $this->discountPercent = $discountPercent;
-
-        return $this;
-    }
-
-    public function getVatRate(): string
-    {
-        return $this->vatRate;
-    }
-
-    public function setVatRate(string $vatRate): static
-    {
-        $this->vatRate = $vatRate;
-
-        return $this;
-    }
-
     public function getPosition(): int
     {
         return $this->position;
@@ -165,33 +131,11 @@ class InvoiceLine
     }
 
     /**
-     * Total HT before discount (quantity x unit price).
+     * Line total (quantity x unit price). No per-line discount or VAT —
+     * VAT is applied once, at the fixed rate, on the invoice total.
      */
-    public function getGrossHt(): float
+    public function getLineTotal(): float
     {
         return round((float) $this->quantity * (float) $this->unitPriceHt, 2);
-    }
-
-    public function getDiscountAmount(): float
-    {
-        return round($this->getGrossHt() * ((float) $this->discountPercent / 100), 2);
-    }
-
-    /**
-     * Total HT after discount.
-     */
-    public function getTotalHt(): float
-    {
-        return round($this->getGrossHt() - $this->getDiscountAmount(), 2);
-    }
-
-    public function getTotalVat(): float
-    {
-        return round($this->getTotalHt() * ((float) $this->vatRate / 100), 2);
-    }
-
-    public function getTotalTtc(): float
-    {
-        return round($this->getTotalHt() + $this->getTotalVat(), 2);
     }
 }

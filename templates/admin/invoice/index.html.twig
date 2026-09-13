@@ -22,7 +22,6 @@
                 <th>N°</th>
                 <th>Date</th>
                 <th>Client</th>
-                <th>Référence</th>
                 <th class="text-end">Total TTC</th>
                 <th class="text-end">Actions</th>
             </tr>
@@ -33,7 +32,6 @@
                     <td class="fw-semibold">{{ invoice.number }}</td>
                     <td>{{ invoice.invoiceDate ? invoice.invoiceDate|date('d/m/Y') : '' }}</td>
                     <td>{{ invoice.client.fullName }}</td>
-                    <td class="text-secondary small">{{ invoice.reference }}</td>
                     <td class="text-end fw-semibold">{{ invoice.totalTtc|number_format(2, ',', ' ') }} {{ invoice.currency }}</td>
                     <td class="text-end">
                         <a href="{{ path('admin_invoice_show', {id: invoice.id}) }}" class="btn btn-sm btn-outline-secondary" title="Aperçu">
@@ -55,7 +53,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center text-secondary py-4">Aucune facture pour le moment.</td>
+                    <td colspan="5" class="text-center text-secondary py-4">Aucune facture pour le moment.</td>
                 </tr>
             {% endfor %}
         </tbody>

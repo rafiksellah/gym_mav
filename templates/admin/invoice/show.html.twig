@@ -55,26 +55,6 @@
             <div class="small text-secondary">Date d'émission</div>
             <div class="fw-semibold">{{ invoice.invoiceDate ? invoice.invoiceDate|date('d/m/Y') : '—' }}</div>
         </div>
-        <div class="col-md-3">
-            <div class="small text-secondary">Date d'échéance</div>
-            <div class="fw-semibold">{{ invoice.dueDate ? invoice.dueDate|date('d/m/Y') : '—' }}</div>
-        </div>
-        <div class="col-md-3">
-            <div class="small text-secondary">Mode de paiement</div>
-            <div class="fw-semibold">{{ invoice.paymentMethod ?: '—' }}</div>
-        </div>
-        {% if invoice.reference %}
-            <div class="col-md-3">
-                <div class="small text-secondary">Référence</div>
-                <div class="fw-semibold">{{ invoice.reference }}</div>
-            </div>
-        {% endif %}
-        {% if invoice.purchaseOrder %}
-            <div class="col-md-3">
-                <div class="small text-secondary">Bon de commande</div>
-                <div class="fw-semibold">{{ invoice.purchaseOrder }}</div>
-            </div>
-        {% endif %}
     </div>
 </div>
 
@@ -85,9 +65,7 @@
                 <th>Désignation</th>
                 <th class="text-end">Qté</th>
                 <th class="text-end">P.U HT</th>
-                <th class="text-end">Remise</th>
-                <th class="text-end">TVA</th>
-                <th class="text-end">Total TTC</th>
+                <th class="text-end">Montant</th>
             </tr>
         </thead>
         <tbody>
@@ -99,13 +77,11 @@
                     </td>
                     <td class="text-end">{{ line.quantity|invoice_qty }}{% if line.unit %} {{ line.unit }}{% endif %}</td>
                     <td class="text-end">{{ line.unitPriceHt|invoice_money }}</td>
-                    <td class="text-end">{{ line.discountPercent > 0 ? line.discountPercent|invoice_qty ~ '%' : '—' }}</td>
-                    <td class="text-end">{{ line.vatRate|invoice_qty }}%</td>
-                    <td class="text-end fw-semibold">{{ line.totalTtc|invoice_money }} {{ invoice.currency }}</td>
+                    <td class="text-end fw-semibold">{{ line.lineTotal|invoice_money }} {{ invoice.currency }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center text-secondary py-4">Aucune ligne sur cette facture.</td>
+                    <td colspan="4" class="text-center text-secondary py-4">Aucune ligne sur cette facture.</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -117,20 +93,12 @@
         <div class="bg-white rounded-viefit border p-4">
             <div class="d-flex justify-content-between mb-2">
                 <span class="text-secondary">Total HT</span>
-                <span>{{ invoice.subtotalHt|invoice_money }} {{ invoice.currency }}</span>
+                <span>{{ invoice.totalHt|invoice_money }} {{ invoice.currency }}</span>
             </div>
-            {% if invoice.totalDiscount > 0 %}
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-secondary">Remise</span>
-                    <span>- {{ invoice.totalDiscount|invoice_money }} {{ invoice.currency }}</span>
-                </div>
-            {% endif %}
-            {% for rate, row in invoice.vatBreakdown %}
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-secondary">TVA {{ rate }}%</span>
-                    <span>{{ row.amount|invoice_money }} {{ invoice.currency }}</span>
-                </div>
-            {% endfor %}
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-secondary">TVA (19%)</span>
+                <span>{{ invoice.totalVat|invoice_money }} {{ invoice.currency }}</span>
+            </div>
             <hr>
             <div class="d-flex justify-content-between fs-5 fw-bold">
                 <span>Total TTC</span>

@@ -45,9 +45,7 @@ class InvoiceController extends AbstractController
         $invoice->setCurrency($settings->getDefaultCurrency());
         $invoice->setNumber($numberGenerator->peekNext($settings));
 
-        $firstLine = new InvoiceLine();
-        $firstLine->setVatRate($settings->getDefaultVatRate());
-        $invoice->addLine($firstLine);
+        $invoice->addLine(new InvoiceLine());
 
         $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);

@@ -26,14 +26,10 @@
         <div class="bg-white rounded-viefit border p-4 mb-4">
             <h6 class="text-uppercase text-secondary small fw-bold mb-3">Informations générales</h6>
             <div class="row g-3">
-                <div class="col-md-3">{{ form_row(form.number) }}</div>
-                <div class="col-md-3">{{ form_row(form.invoiceDate) }}</div>
-                <div class="col-md-3">{{ form_row(form.dueDate) }}</div>
-                <div class="col-md-3">{{ form_row(form.currency) }}</div>
+                <div class="col-md-4">{{ form_row(form.number) }}</div>
+                <div class="col-md-4">{{ form_row(form.invoiceDate) }}</div>
+                <div class="col-md-4">{{ form_row(form.currency) }}</div>
                 <div class="col-md-6">{{ form_row(form.client) }}</div>
-                <div class="col-md-6">{{ form_row(form.paymentMethod) }}</div>
-                <div class="col-md-6">{{ form_row(form.reference) }}</div>
-                <div class="col-md-6">{{ form_row(form.purchaseOrder) }}</div>
                 <div class="col-12">{{ form_row(form.notes) }}</div>
             </div>
         </div>
@@ -50,14 +46,12 @@
                 <table class="table table-sm mb-0" id="lines-table">
                     <thead>
                         <tr>
-                            <th style="width:26%;">Désignation</th>
-                            <th style="width:12%;">Référence</th>
-                            <th style="width:8%;">Qté</th>
-                            <th style="width:9%;">Unité</th>
-                            <th style="width:11%;">P.U HT</th>
-                            <th style="width:8%;">Remise %</th>
-                            <th style="width:8%;">TVA %</th>
-                            <th style="width:11%;" class="text-end">Total TTC</th>
+                            <th style="width:34%;">Désignation</th>
+                            <th style="width:16%;">Référence</th>
+                            <th style="width:12%;">Qté</th>
+                            <th style="width:12%;">Unité</th>
+                            <th style="width:14%;">P.U HT</th>
+                            <th style="width:12%;" class="text-end">Montant</th>
                             <th style="width:7%;"></th>
                         </tr>
                     </thead>
@@ -78,19 +72,11 @@
         <div class="bg-white rounded-viefit border p-4 invoice-summary-box">
             <h6 class="text-uppercase text-secondary small fw-bold mb-3">Totaux</h6>
             <div class="invoice-summary-row">
-                <span class="text-secondary">Sous-total HT</span>
-                <span id="summary-subtotal">0,00</span>
-            </div>
-            <div class="invoice-summary-row">
-                <span class="text-secondary">Remise</span>
-                <span id="summary-discount">0,00</span>
-            </div>
-            <div class="invoice-summary-row">
                 <span class="text-secondary">Total HT</span>
                 <span id="summary-total-ht">0,00</span>
             </div>
             <div class="invoice-summary-row">
-                <span class="text-secondary">TVA</span>
+                <span class="text-secondary">TVA (19%)</span>
                 <span id="summary-vat">0,00</span>
             </div>
             <div class="invoice-summary-row total">
@@ -115,9 +101,7 @@
         <td>{{ form_widget(lineForm.quantity) }}</td>
         <td>{{ form_widget(lineForm.unit) }}</td>
         <td>{{ form_widget(lineForm.unitPriceHt) }}</td>
-        <td>{{ form_widget(lineForm.discountPercent) }}</td>
-        <td>{{ form_widget(lineForm.vatRate) }}</td>
-        <td class="text-end fw-semibold js-line-total-ttc">0,00</td>
+        <td class="text-end fw-semibold js-line-total">0,00</td>
         <td class="text-nowrap text-end">
             {{ form_widget(lineForm.position) }}
             <button type="button" class="btn btn-sm btn-link text-secondary p-1 js-move-up" title="Monter"><i class="bi bi-arrow-up"></i></button>
@@ -132,6 +116,7 @@
 {% block javascripts %}
 <script>
 (function () {
+    const VAT_RATE = 19;
     const linesBody = document.getElementById('lines-body');
     const addBtn = document.getElementById('add-line-btn');
     const noLinesMessage = document.getElementById('no-lines-message');
@@ -147,37 +132,25 @@
     }
 
     function recalculate() {
-        let subtotal = 0, discountTotal = 0, vatTotal = 0;
+        let totalHt = 0;
 
         linesBody.querySelectorAll('tr.line-row').forEach(function (row) {
             const qty = toNumber(row.querySelector('.js-line-qty'));
             const price = toNumber(row.querySelector('.js-line-price'));
-            const discountPct = toNumber(row.querySelector('.js-line-discount'));
-            const vatPct = toNumber(row.querySelector('.js-line-vat'));
+            const lineTotal = qty * price;
+            totalHt += lineTotal;
 
-            const gross = qty * price;
-            const discountAmount = gross * (discountPct / 100);
-            const totalHt = gross - discountAmount;
-            const vatAmount = totalHt * (vatPct / 100);
-            const totalTtc = totalHt + vatAmount;
-
-            subtotal += gross;
-            discountTotal += discountAmount;
-            vatTotal += vatAmount;
-
-            const totalCell = row.querySelector('.js-line-total-ttc');
+            const totalCell = row.querySelector('.js-line-total');
             if (totalCell) {
-                totalCell.textContent = formatMoney(totalTtc);
+                totalCell.textContent = formatMoney(lineTotal);
             }
         });
 
-        const totalHt = subtotal - discountTotal;
-        const totalTtc = totalHt + vatTotal;
+        const vat = totalHt * (VAT_RATE / 100);
+        const totalTtc = totalHt + vat;
 
-        document.getElementById('summary-subtotal').textContent = formatMoney(subtotal);
-        document.getElementById('summary-discount').textContent = formatMoney(discountTotal);
         document.getElementById('summary-total-ht').textContent = formatMoney(totalHt);
-        document.getElementById('summary-vat').textContent = formatMoney(vatTotal);
+        document.getElementById('summary-vat').textContent = formatMoney(vat);
         document.getElementById('summary-total-ttc').textContent = formatMoney(totalTtc);
 
         noLinesMessage.style.display = linesBody.querySelectorAll('tr.line-row').length === 0 ? '' : 'none';
@@ -188,13 +161,17 @@
         const wrapper = document.createElement('tbody');
         wrapper.innerHTML = template;
         const newRow = wrapper.querySelector('tr.line-row');
+        const positionInput = newRow.querySelector('.js-line-position');
+        if (positionInput) {
+            positionInput.value = linesBody.querySelectorAll('tr.line-row').length;
+        }
         linesBody.appendChild(newRow);
         nextIndex++;
         recalculate();
     }
 
     linesBody.addEventListener('input', function (event) {
-        if (event.target.matches('.js-line-qty, .js-line-price, .js-line-discount, .js-line-vat')) {
+        if (event.target.matches('.js-line-qty, .js-line-price')) {
             recalculate();
         }
     });

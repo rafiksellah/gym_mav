@@ -41,18 +41,6 @@ class InvoiceLineType extends AbstractType
                 'scale' => 2,
                 'attr' => ['step' => '0.01', 'min' => 0, 'class' => 'js-line-price'],
             ])
-            ->add('discountPercent', NumberType::class, [
-                'label' => 'Remise %',
-                'html5' => true,
-                'scale' => 2,
-                'attr' => ['step' => '0.01', 'min' => 0, 'max' => 100, 'class' => 'js-line-discount'],
-            ])
-            ->add('vatRate', NumberType::class, [
-                'label' => 'TVA %',
-                'html5' => true,
-                'scale' => 2,
-                'attr' => ['step' => '0.01', 'min' => 0, 'max' => 100, 'class' => 'js-line-vat'],
-            ])
             ->add('position', HiddenType::class, [
                 'attr' => ['class' => 'js-line-position'],
             ])

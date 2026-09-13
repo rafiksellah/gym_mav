@@ -27,7 +27,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->addOrderBy('i.id', 'DESC');
 
         if ($search) {
-            $qb->andWhere('i.number LIKE :search OR c.name LIKE :search OR c.firstName LIKE :search OR i.reference LIKE :search')
+            $qb->andWhere('i.number LIKE :search OR c.name LIKE :search')
                 ->setParameter('search', '%'.$search.'%');
         }
 
