@@ -13,7 +13,7 @@
     }
     {% endif %}
 
-    @page { margin: 10mm 12mm 0 12mm; }
+    @page { margin: 0 12mm 0 12mm; }
 
     * { box-sizing: border-box; }
 
@@ -25,8 +25,8 @@
         padding: 0 0 26mm 0;
     }
 
-    .navy { color: #17335c; }
-    .red { color: #b5352c; }
+    .navy { color: #0A396B; }
+    .red { color: #E81030; }
 
     table { border-collapse: collapse; width: 100%; }
 
@@ -35,41 +35,71 @@
     /* ---------- Watermark ---------- */
     .watermark {
         position: fixed;
-        bottom: 20mm;
-        right: -10mm;
-        width: 230px;
-        opacity: 0.055;
+        bottom: 28mm;
+        left: -20mm;
+        width: 250px;
+        opacity: 0.06;
         z-index: -10;
     }
 
+    .footer-ribbon {
+        position: fixed;
+        bottom: 14mm;
+        right: -12mm;
+        width: 150px;
+        z-index: -5;
+    }
+
     /* ---------- Header ---------- */
-    .header-table { table-layout: fixed; }
+    .header-wrap {
+        position: relative;
+        height: 95mm;
+        margin: 0 -12mm 10px -12mm;
+        overflow: hidden;
+    }
+
+    .header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .header-table { table-layout: fixed; height: 100%; }
     .header-table td { vertical-align: top; }
 
-    .brand-cell { width: 54%; padding-right: 10px; }
+    .brand-cell { width: 43%; padding: 9mm 4px 0 12mm; }
     .brand-table { table-layout: fixed; }
     .brand-table td { vertical-align: middle; }
-    .brand-icon { width: 66px; padding-right: 8px; }
-    .brand-icon img { width: 60px; }
+    .brand-icon { width: 56px; padding-right: 6px; }
+    .brand-icon img { width: 50px; }
 
     .company-name {
-        font-size: 21px;
+        font-size: 20px;
         font-weight: bold;
-        color: #17335c;
+        color: #0A396B;
         letter-spacing: 0.5px;
         margin: 0 0 2px;
         white-space: nowrap;
     }
 
     .company-tagline {
-        font-size: 9.8px;
+        font-size: 8.3px;
         font-weight: bold;
-        color: #17335c;
+        color: #0A396B;
         margin-bottom: 1px;
+        line-height: 1.45;
         white-space: nowrap;
     }
 
-    .company-tagline .red { color: #b5352c; }
+    .company-tagline .tagline-sub {
+        font-weight: bold;
+        text-transform: none;
+    }
+
+    .company-tagline .red { color: #E81030; }
 
     .company-script {
         font-family: {% if scriptFontPath %}'InvoiceScript', {% endif %}'DejaVu Sans', cursive;
@@ -80,21 +110,16 @@
         white-space: normal;
     }
 
-    .contact-cell { position: relative; padding-top: 2px; width: 46%; padding-right: 60px; }
-
-    .ribbon {
-        position: absolute;
-        top: -8mm;
-        right: -12mm;
-        width: 95px;
-        height: 110px;
-        z-index: -1;
+    .contact-cell {
+        width: 57%;
+        padding: 30mm 12mm 0 5mm;
+        color: #ffffff;
     }
 
     .contact-row {
         font-size: 9px;
         padding: 2.5px 0;
-        color: #17335c;
+        color: #ffffff;
         line-height: 1.35;
     }
 
@@ -104,27 +129,24 @@
         text-align: center;
     }
 
-    .header-rule {
-        border: none;
-        border-top: 1.4px solid #d8dee5;
-        margin: 8px 0 6px;
-    }
-
     .legal-block {
-        font-size: 8.3px;
-        color: #47525d;
+        font-size: 8px;
+        color: #ffffff;
         line-height: 1.55;
+        margin-top: 6px;
+        padding-top: 6px;
+        border-top: 1px solid rgba(255,255,255,0.3);
     }
 
-    .legal-block .navy { font-weight: bold; }
+    .legal-block b { font-weight: bold; }
 
     /* ---------- Client / Facture / Date band ---------- */
-    .meta-table { margin-top: 12px; }
+    .meta-table { margin-top: 4px; }
 
     .meta-table td {
         vertical-align: top;
-        border-top: 2px solid #17335c;
-        border-bottom: 2px solid #17335c;
+        border-top: 2px solid #0A396B;
+        border-bottom: 2px solid #0A396B;
         padding: 10px 12px;
     }
 
@@ -133,7 +155,7 @@
     .client-label {
         font-size: 10px;
         font-weight: bold;
-        color: #17335c;
+        color: #0A396B;
         text-transform: uppercase;
         border-bottom: 1px solid #c7ccd2;
         padding-bottom: 4px;
@@ -151,14 +173,14 @@
     .facture-title {
         font-size: 27px;
         font-weight: bold;
-        color: #17335c;
+        color: #0A396B;
         letter-spacing: 2px;
         margin-bottom: 7px;
     }
 
     .facture-number {
         display: inline-block;
-        background-color: #17335c;
+        background-color: #0A396B;
         color: #fff;
         font-weight: bold;
         font-size: 11px;
@@ -167,15 +189,15 @@
     }
 
     .date-cell { width: 24%; text-align: right; }
-    .date-label { font-size: 8.5px; color: #55606b; text-transform: uppercase; margin-bottom: 3px; }
+    .date-label { font-size: 8.5px; color: #0A396B; text-transform: uppercase; margin-bottom: 3px; }
     .date-label .icon-wrap { margin-right: 4px; display: inline-block; width: 11px; }
-    .date-value { font-size: 12px; font-weight: bold; color: #17335c; }
+    .date-value { font-size: 12px; font-weight: bold; color: #0A396B; }
 
     /* ---------- Lines table ---------- */
     .lines-table { margin-top: 16px; }
 
     .lines-table thead th {
-        background-color: #17335c;
+        background-color: #0A396B;
         color: #fff;
         font-size: 9.5px;
         text-transform: uppercase;
@@ -212,7 +234,7 @@
     .totals-table td {
         padding: 7px 12px;
         font-size: 10px;
-        background-color: #f2f4f7;
+        background-color: #eef2f9;
         border-bottom: 1px solid #e2e6eb;
     }
 
@@ -220,7 +242,7 @@
     .totals-table td.value { text-align: right; font-weight: bold; background-color: #ffffff; }
 
     .totals-table tr.grand-total td {
-        background-color: #17335c;
+        background-color: #0A396B;
         color: #fff;
         font-size: 13px;
         font-weight: bold;
@@ -234,10 +256,10 @@
 
     .amount-words .label { font-size: 9.5px; color: #333; }
     .amount-words .value {
-        font-size: 12px;
+        font-size: 15px;
         font-weight: bold;
         font-style: italic;
-        color: #17335c;
+        color: #0A396B;
         margin-top: 4px;
     }
 
@@ -247,7 +269,7 @@
         color: #55606b;
     }
 
-    .payment-block strong { color: #17335c; }
+    .payment-block strong { color: #0A396B; }
 
     /* ---------- Footer ---------- */
     .invoice-footer {
@@ -255,7 +277,7 @@
         bottom: 0;
         left: -12mm;
         right: -12mm;
-        background-color: #17335c;
+        background-color: #0A396B;
         color: #fff;
         font-size: 8.6px;
         padding: 8px 12mm;
@@ -276,45 +298,55 @@
 {% if logoDataUri %}
     <img src="{{ logoDataUri }}" class="watermark" alt="">
 {% endif %}
+{% if footerRibbonDataUri %}
+    <img src="{{ footerRibbonDataUri }}" class="footer-ribbon" alt="">
+{% endif %}
 
-<table class="header-table">
-    <tr>
-        <td class="brand-cell">
-            <table class="brand-table">
-                <tr>
-                    {% if logoDataUri %}
-                        <td class="brand-icon"><img src="{{ logoDataUri }}" alt="Logo"></td>
-                    {% endif %}
-                    <td>
-                        <div class="company-name">{{ settings.name }}</div>
-                        {% if settings.tagline %}
-                            <div class="company-tagline">{{ settings.tagline|replace({'|': ' <span class="red">|</span> '})|raw }}</div>
+<div class="header-wrap">
+    {% if headerPanelDataUri %}<img src="{{ headerPanelDataUri }}" class="header-bg" alt="">{% endif %}
+
+    <table class="header-table">
+        <tr>
+            <td class="brand-cell">
+                <table class="brand-table">
+                    <tr>
+                        {% if logoDataUri %}
+                            <td class="brand-icon"><img src="{{ logoDataUri }}" alt="Logo"></td>
                         {% endif %}
-                        {% if settings.slogan %}
-                            <div class="company-script">{{ settings.slogan }}</div>
-                        {% endif %}
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="contact-cell">
-            {% if ribbonDataUri %}<img src="{{ ribbonDataUri }}" class="ribbon" alt="">{% endif %}
-            {% if settings.address %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.pin_navy }}" width="10" class="icon"></span>{{ settings.address }}</div>{% endif %}
-            {% if settings.phone %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.phone_navy }}" width="10" class="icon"></span>&nbsp;Tél. : {{ settings.phone }}</div>{% endif %}
-            {% if settings.email %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.envelope_navy }}" width="10" class="icon"></span>&nbsp;Email : {{ settings.email }}</div>{% endif %}
-            {% if settings.website %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.globe_navy }}" width="10" class="icon"></span>&nbsp;{{ settings.website }}</div>{% endif %}
-        </td>
-    </tr>
-</table>
+                        <td>
+                            <div class="company-name">{{ settings.name }}</div>
+                            {% if settings.tagline %}
+                                {% set taglineParts = settings.tagline|split('|') %}
+                                {% if taglineParts|length > 1 %}
+                                    {% set afterPipe = taglineParts[1]|trim|split(' ', 2) %}
+                                    <div class="company-tagline">{{ taglineParts[0]|trim|upper }} <span class="red">| {{ afterPipe[0]|upper }}</span>{% if afterPipe[1] is defined %}<br><span class="tagline-sub">{{ afterPipe[1] }}</span>{% endif %}</div>
+                                {% else %}
+                                    <div class="company-tagline">{{ settings.tagline }}</div>
+                                {% endif %}
+                            {% endif %}
+                            {% if settings.slogan %}
+                                <div class="company-script">{{ settings.slogan }}</div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="contact-cell">
+                {% if settings.address %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.pin_white }}" width="10" class="icon"></span>{{ settings.address }}</div>{% endif %}
+                {% if settings.phone %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.phone_white }}" width="10" class="icon"></span>&nbsp;Tél. : {{ settings.phone }}</div>{% endif %}
+                {% if settings.email %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.envelope_white }}" width="10" class="icon"></span>&nbsp;Email : {{ settings.email }}</div>{% endif %}
+                {% if settings.website %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.globe_white }}" width="10" class="icon"></span>&nbsp;{{ settings.website }}</div>{% endif %}
 
-<hr class="header-rule">
-
-<div class="legal-block">
-    {% if settings.rc or settings.ai %}<span class="navy">RC</span> : {{ settings.rc }}{% if settings.ai %} &nbsp;|&nbsp; <span class="navy">AI</span> : {{ settings.ai }}{% endif %}<br>{% endif %}
-    {% if settings.nif or settings.nis %}<span class="navy">NIF N°</span> : {{ settings.nif }}{% if settings.nis %} &nbsp;|&nbsp; <span class="navy">NIS N°</span> : {{ settings.nis }}{% endif %}<br>{% endif %}
-    {% if settings.capitalSocial %}<span class="navy">Capital social</span> : {{ settings.capitalSocial }}<br>{% endif %}
-    {% if settings.rib %}<span class="navy">RIB</span> : {{ settings.rib }}<br>{% endif %}
-    {% if settings.bankInfo %}{{ settings.bankInfo }}{% endif %}
+                <div class="legal-block">
+                    {% if settings.rc or settings.ai %}<b>RC</b> : {{ settings.rc }}{% if settings.ai %} &nbsp;|&nbsp; <b>AI</b> : {{ settings.ai }}{% endif %}<br>{% endif %}
+                    {% if settings.nif or settings.nis %}<b>NIF N°</b> : {{ settings.nif }}{% if settings.nis %} &nbsp;|&nbsp; <b>NIS N°</b> : {{ settings.nis }}{% endif %}<br>{% endif %}
+                    {% if settings.capitalSocial %}<b>Capital social</b> : {{ settings.capitalSocial }}<br>{% endif %}
+                    {% if settings.rib %}<b>RIB</b> : {{ settings.rib }}<br>{% endif %}
+                    {% if settings.bankInfo %}{{ settings.bankInfo }}{% endif %}
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <table class="meta-table">
@@ -325,15 +357,15 @@
             {% if invoice.client.nif %}<div class="client-line">NIF : {{ invoice.client.nif }}</div>{% endif %}
             {% if invoice.client.ai %}<div class="client-line">Article : {{ invoice.client.ai }}</div>{% endif %}
             {% if invoice.client.nis %}<div class="client-line">NIS : {{ invoice.client.nis }}</div>{% endif %}
-            <div class="client-line"><span class="icon-wrap"><img src="{{ icon.envelope_gray }}" width="8" class="icon"></span>&nbsp;—</div>
-            <div class="client-line"><span class="icon-wrap"><img src="{{ icon.phone_gray }}" width="8" class="icon"></span>&nbsp;—</div>
+            <div class="client-line"><span class="icon-wrap"><img src="{{ icon.envelope_navy }}" width="8" class="icon"></span>&nbsp;—</div>
+            <div class="client-line"><span class="icon-wrap"><img src="{{ icon.phone_navy }}" width="8" class="icon"></span>&nbsp;—</div>
         </td>
         <td class="facture-cell">
             <div class="facture-title">FACTURE</div>
             <div class="facture-number">N° {{ invoice.number }}</div>
         </td>
         <td class="date-cell">
-            <div class="date-label"><span class="icon-wrap"><img src="{{ icon.calendar_gray }}" width="9" class="icon"></span>Date d'émission</div>
+            <div class="date-label"><span class="icon-wrap"><img src="{{ icon.calendar_navy }}" width="9" class="icon"></span>Date d'émission</div>
             <div class="date-value">{{ invoice.invoiceDate ? invoice.invoiceDate|date('d/m/Y') : '' }}</div>
         </td>
     </tr>

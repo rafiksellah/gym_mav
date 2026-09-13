@@ -25,7 +25,8 @@ class InvoicePdfGenerator
             'logoDataUri' => $this->logoAsDataUri($settings),
             'scriptFontPath' => $this->scriptFontAsDataUri(),
             'icon' => $this->iconsMap(),
-            'ribbonDataUri' => $this->assetAsDataUri('icons/ribbon.png'),
+            'headerPanelDataUri' => $this->assetAsDataUri('icons/header-panel.png'),
+            'footerRibbonDataUri' => $this->assetAsDataUri('icons/footer-ribbon.png'),
             'amountInWords' => $this->numberToWords->convertAmount(
                 $invoice->getTotalTtc(),
                 $this->numberToWords->currencyLabel($invoice->getCurrency()),
