@@ -8,6 +8,11 @@ framework:
     #esi: true
     #fragments: true
 
+    # Bump this string whenever a static CSS/JS file under public/assets changes,
+    # so it gets a new ?v= query string and bypasses the host's aggressive caching.
+    assets:
+        version: 'v3'
+
 when@test:
     framework:
         test: true
