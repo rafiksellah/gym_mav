@@ -19,11 +19,6 @@ class InvoiceLineType extends AbstractType
                 'label' => 'Désignation',
                 'attr' => ['class' => 'js-line-description'],
             ])
-            ->add('reference', TextType::class, [
-                'label' => 'Référence',
-                'required' => false,
-                'attr' => ['class' => 'js-line-reference'],
-            ])
             ->add('quantity', NumberType::class, [
                 'label' => 'Qté',
                 'html5' => true,

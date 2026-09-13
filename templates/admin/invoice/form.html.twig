@@ -46,12 +46,11 @@
                 <table class="table table-sm mb-0" id="lines-table">
                     <thead>
                         <tr>
-                            <th style="width:34%;">Désignation</th>
-                            <th style="width:16%;">Référence</th>
-                            <th style="width:12%;">Qté</th>
-                            <th style="width:12%;">Unité</th>
-                            <th style="width:14%;">P.U HT</th>
-                            <th style="width:12%;" class="text-end">Montant</th>
+                            <th style="width:40%;">Désignation</th>
+                            <th style="width:14%;">Qté</th>
+                            <th style="width:14%;">Unité</th>
+                            <th style="width:16%;">P.U HT</th>
+                            <th style="width:14%;" class="text-end">Montant</th>
                             <th style="width:7%;"></th>
                         </tr>
                     </thead>
@@ -97,7 +96,6 @@
 {% macro line_row(lineForm) %}
     <tr class="line-row">
         <td>{{ form_widget(lineForm.description) }}{{ form_errors(lineForm.description) }}</td>
-        <td>{{ form_widget(lineForm.reference) }}</td>
         <td>{{ form_widget(lineForm.quantity) }}</td>
         <td>{{ form_widget(lineForm.unit) }}</td>
         <td>{{ form_widget(lineForm.unitPriceHt) }}</td>

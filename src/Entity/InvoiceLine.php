@@ -22,9 +22,6 @@ class InvoiceLine
     #[Assert\NotBlank(message: 'La désignation est obligatoire.')]
     private ?string $description = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $reference = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 3)]
     #[Assert\NotNull]
     #[Assert\Positive(message: 'La quantité doit être positive.')]
@@ -66,18 +63,6 @@ class InvoiceLine
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(?string $reference): static
-    {
-        $this->reference = $reference;
 
         return $this;
     }
