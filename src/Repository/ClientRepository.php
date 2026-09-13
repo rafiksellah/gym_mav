@@ -25,7 +25,7 @@ class ClientRepository extends ServiceEntityRepository
             ->orderBy('c.name', 'ASC');
 
         if ($search) {
-            $qb->andWhere('c.name LIKE :search OR c.firstName LIKE :search OR c.email LIKE :search OR c.phone LIKE :search')
+            $qb->andWhere('c.name LIKE :search OR c.nif LIKE :search OR c.nis LIKE :search OR c.ai LIKE :search')
                 ->setParameter('search', '%'.$search.'%');
         }
 

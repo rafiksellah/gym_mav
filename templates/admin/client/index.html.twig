@@ -7,7 +7,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
     <form method="get" class="d-flex gap-2">
-        <input type="search" name="q" value="{{ search }}" class="form-control" placeholder="Rechercher un client (nom, email, téléphone)..." style="min-width:320px;">
+        <input type="search" name="q" value="{{ search }}" class="form-control" placeholder="Rechercher un client (nom, NIF, NIS, Article)..." style="min-width:320px;">
         <button type="submit" class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
     </form>
     <a href="{{ path('admin_client_new') }}" class="btn btn-teal">
@@ -19,9 +19,10 @@
     <table class="table align-middle mb-0">
         <thead>
             <tr>
-                <th>Nom / raison sociale</th>
-                <th>Contact</th>
-                <th>NIF / RC</th>
+                <th>Nom du client</th>
+                <th>NIF</th>
+                <th>Article</th>
+                <th>NIS</th>
                 <th class="text-end">Factures</th>
                 <th class="text-end">Actions</th>
             </tr>
@@ -29,17 +30,10 @@
         <tbody>
             {% for client in clients %}
                 <tr>
-                    <td>
-                        <div class="fw-semibold">{{ client.fullName }}</div>
-                        {% if client.address %}<div class="text-secondary small">{{ client.address|length > 60 ? client.address|slice(0, 60) ~ '…' : client.address }}</div>{% endif %}
-                    </td>
-                    <td>
-                        {% if client.email %}<div class="small">{{ client.email }}</div>{% endif %}
-                        {% if client.phone %}<div class="small text-secondary">{{ client.phone }}</div>{% endif %}
-                    </td>
-                    <td class="small text-secondary">
-                        {{ client.nif }}{% if client.nif and client.rc %}<br>{% endif %}{{ client.rc }}
-                    </td>
+                    <td class="fw-semibold">{{ client.name }}</td>
+                    <td class="small text-secondary">{{ client.nif ?: '—' }}</td>
+                    <td class="small text-secondary">{{ client.ai ?: '—' }}</td>
+                    <td class="small text-secondary">{{ client.nis ?: '—' }}</td>
                     <td class="text-end">{{ client.invoices|length }}</td>
                     <td class="text-end">
                         <a href="{{ path('admin_client_edit', {id: client.id}) }}" class="btn btn-sm btn-outline-secondary">
@@ -55,7 +49,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5" class="text-center text-secondary py-4">Aucun client pour le moment.</td>
+                    <td colspan="6" class="text-center text-secondary py-4">Aucun client pour le moment.</td>
                 </tr>
             {% endfor %}
         </tbody>

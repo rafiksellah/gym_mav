@@ -254,9 +254,9 @@
         <td class="client-cell">
             <div class="client-label">Client</div>
             <div class="client-name">{{ invoice.client.fullName }}</div>
-            {% if invoice.client.address %}<div class="client-line">{{ invoice.client.address }}</div>{% endif %}
-            <div class="client-line">{{ invoice.client.email ?: '—' }}</div>
-            <div class="client-line">{{ invoice.client.phone ?: '—' }}</div>
+            {% if invoice.client.nif %}<div class="client-line">NIF : {{ invoice.client.nif }}</div>{% endif %}
+            {% if invoice.client.ai %}<div class="client-line">Article : {{ invoice.client.ai }}</div>{% endif %}
+            {% if invoice.client.nis %}<div class="client-line">NIS : {{ invoice.client.nis }}</div>{% endif %}
             {% if invoice.reference %}<div class="client-line" style="margin-top:4px;">Réf. : {{ invoice.reference }}</div>{% endif %}
             {% if invoice.purchaseOrder %}<div class="client-line">Bon de commande : {{ invoice.purchaseOrder }}</div>{% endif %}
         </td>

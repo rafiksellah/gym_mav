@@ -72,7 +72,12 @@ class InvoiceExcelExporter
         $sheet->setCellValue("A{$row}", $invoice->getClient()->getFullName());
         $sheet->mergeCells("A{$row}:D{$row}");
         ++$row;
-        foreach (array_filter([$invoice->getClient()->getAddress(), $invoice->getClient()->getEmail(), $invoice->getClient()->getPhone()]) as $line) {
+        $clientLines = array_filter([
+            $invoice->getClient()->getNif() ? 'NIF : '.$invoice->getClient()->getNif() : null,
+            $invoice->getClient()->getAi() ? 'Article : '.$invoice->getClient()->getAi() : null,
+            $invoice->getClient()->getNis() ? 'NIS : '.$invoice->getClient()->getNis() : null,
+        ]);
+        foreach ($clientLines as $line) {
             $sheet->setCellValue("A{$row}", $line);
             $sheet->mergeCells("A{$row}:D{$row}");
             ++$row;

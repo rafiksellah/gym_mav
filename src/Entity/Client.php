@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,21 +17,8 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Assert\NotBlank(message: 'Le nom / la raison sociale est obligatoire.')]
+    #[Assert\NotBlank(message: 'Le nom du client est obligatoire.')]
     private ?string $name = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $firstName = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $address = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $phone = null;
-
-    #[ORM\Column(length: 180, nullable: true)]
-    #[Assert\Email(message: 'Cet email n\'est pas valide.')]
-    private ?string $email = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $nif = null;
@@ -41,16 +27,7 @@ class Client
     private ?string $nis = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    private ?string $rc = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
     private ?string $ai = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $rib = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $notes = null;
 
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
@@ -84,54 +61,6 @@ class Client
         return $this;
     }
 
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(?string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getNif(): ?string
     {
         return $this->nif;
@@ -156,18 +85,6 @@ class Client
         return $this;
     }
 
-    public function getRc(): ?string
-    {
-        return $this->rc;
-    }
-
-    public function setRc(?string $rc): static
-    {
-        $this->rc = $rc;
-
-        return $this;
-    }
-
     public function getAi(): ?string
     {
         return $this->ai;
@@ -176,30 +93,6 @@ class Client
     public function setAi(?string $ai): static
     {
         $this->ai = $ai;
-
-        return $this;
-    }
-
-    public function getRib(): ?string
-    {
-        return $this->rib;
-    }
-
-    public function setRib(?string $rib): static
-    {
-        $this->rib = $rib;
-
-        return $this;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function setNotes(?string $notes): static
-    {
-        $this->notes = $notes;
 
         return $this;
     }
@@ -226,7 +119,7 @@ class Client
 
     public function getFullName(): string
     {
-        return trim(($this->name ?? '').($this->firstName ? ' '.$this->firstName : ''));
+        return $this->name ?? '';
     }
 
     public function __toString(): string

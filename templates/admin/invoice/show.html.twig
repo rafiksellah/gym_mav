@@ -38,9 +38,9 @@
         <div class="col-md-6">
             <div class="small text-secondary text-uppercase mb-1">Client</div>
             <div class="fw-semibold">{{ invoice.client.fullName }}</div>
-            {% if invoice.client.address %}<div class="small text-secondary">{{ invoice.client.address }}</div>{% endif %}
-            {% if invoice.client.email %}<div class="small text-secondary">{{ invoice.client.email }}</div>{% endif %}
-            {% if invoice.client.phone %}<div class="small text-secondary">{{ invoice.client.phone }}</div>{% endif %}
+            {% if invoice.client.nif %}<div class="small text-secondary">NIF : {{ invoice.client.nif }}</div>{% endif %}
+            {% if invoice.client.ai %}<div class="small text-secondary">Article : {{ invoice.client.ai }}</div>{% endif %}
+            {% if invoice.client.nis %}<div class="small text-secondary">NIS : {{ invoice.client.nis }}</div>{% endif %}
         </div>
     </div>
 

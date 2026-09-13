@@ -7,41 +7,20 @@
 
 {% block body %}
 
-<div class="bg-white rounded-viefit border p-4" style="max-width: 800px;">
+<div class="bg-white rounded-viefit border p-4" style="max-width: 600px;">
     {{ form_start(form) }}
         <div class="row g-3">
-            <div class="col-md-8">
+            <div class="col-12">
                 {{ form_row(form.name) }}
             </div>
             <div class="col-md-4">
-                {{ form_row(form.firstName) }}
-            </div>
-            <div class="col-12">
-                {{ form_row(form.address) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.phone) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.email) }}
-            </div>
-            <div class="col-md-3">
                 {{ form_row(form.nif) }}
             </div>
-            <div class="col-md-3">
-                {{ form_row(form.nis) }}
-            </div>
-            <div class="col-md-3">
-                {{ form_row(form.rc) }}
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 {{ form_row(form.ai) }}
             </div>
-            <div class="col-md-6">
-                {{ form_row(form.rib) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.notes) }}
+            <div class="col-md-4">
+                {{ form_row(form.nis) }}
             </div>
         </div>
 

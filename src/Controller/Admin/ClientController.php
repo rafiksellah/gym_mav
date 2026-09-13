@@ -10,10 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/clients')]
-#[IsGranted('ROLE_SUPER_ADMIN')]
 class ClientController extends AbstractController
 {
     #[Route('', name: 'admin_client_index', methods: ['GET'])]
