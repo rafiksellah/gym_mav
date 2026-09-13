@@ -70,27 +70,25 @@
     .header-table { table-layout: fixed; height: 100%; }
     .header-table td { vertical-align: top; }
 
-    .brand-cell { width: 43%; padding: 9mm 4px 0 12mm; }
-    .brand-table { table-layout: fixed; }
-    .brand-table td { vertical-align: middle; }
-    .brand-icon { width: 56px; padding-right: 6px; }
-    .brand-icon img { width: 50px; }
+    .brand-cell { width: 43%; padding: 6mm 4px 0 12mm; }
+    .brand-logo { margin-bottom: 4mm; }
+    .brand-logo img { width: 46mm; }
 
     .company-name {
-        font-size: 20px;
+        font-size: 25px;
         font-weight: bold;
         color: #0A396B;
         letter-spacing: 0.5px;
-        margin: 0 0 2px;
+        margin: 0 0 3px;
         white-space: nowrap;
     }
 
     .company-tagline {
-        font-size: 8.3px;
+        font-size: 10.5px;
         font-weight: bold;
         color: #0A396B;
-        margin-bottom: 1px;
-        line-height: 1.45;
+        margin-bottom: 2px;
+        line-height: 1.5;
         white-space: nowrap;
     }
 
@@ -103,10 +101,10 @@
 
     .company-script {
         font-family: {% if scriptFontPath %}'InvoiceScript', {% endif %}'DejaVu Sans', cursive;
-        font-size: 12.5px;
+        font-size: 15px;
         font-style: italic;
         color: #2f6fb0;
-        margin-top: 3px;
+        margin-top: 4px;
         white-space: normal;
     }
 
@@ -308,28 +306,22 @@
     <table class="header-table">
         <tr>
             <td class="brand-cell">
-                <table class="brand-table">
-                    <tr>
-                        {% if logoDataUri %}
-                            <td class="brand-icon"><img src="{{ logoDataUri }}" alt="Logo"></td>
-                        {% endif %}
-                        <td>
-                            <div class="company-name">{{ settings.name }}</div>
-                            {% if settings.tagline %}
-                                {% set taglineParts = settings.tagline|split('|') %}
-                                {% if taglineParts|length > 1 %}
-                                    {% set afterPipe = taglineParts[1]|trim|split(' ', 2) %}
-                                    <div class="company-tagline">{{ taglineParts[0]|trim|upper }} <span class="red">| {{ afterPipe[0]|upper }}</span>{% if afterPipe[1] is defined %}<br><span class="tagline-sub">{{ afterPipe[1] }}</span>{% endif %}</div>
-                                {% else %}
-                                    <div class="company-tagline">{{ settings.tagline }}</div>
-                                {% endif %}
-                            {% endif %}
-                            {% if settings.slogan %}
-                                <div class="company-script">{{ settings.slogan }}</div>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
+                {% if logoDataUri %}
+                    <div class="brand-logo"><img src="{{ logoDataUri }}" alt="Logo"></div>
+                {% endif %}
+                <div class="company-name">{{ settings.name }}</div>
+                {% if settings.tagline %}
+                    {% set taglineParts = settings.tagline|split('|') %}
+                    {% if taglineParts|length > 1 %}
+                        {% set afterPipe = taglineParts[1]|trim|split(' ', 2) %}
+                        <div class="company-tagline">{{ taglineParts[0]|trim|upper }} <span class="red">| {{ afterPipe[0]|upper }}</span>{% if afterPipe[1] is defined %}<br><span class="tagline-sub">{{ afterPipe[1] }}</span>{% endif %}</div>
+                    {% else %}
+                        <div class="company-tagline">{{ settings.tagline }}</div>
+                    {% endif %}
+                {% endif %}
+                {% if settings.slogan %}
+                    <div class="company-script">{{ settings.slogan }}</div>
+                {% endif %}
             </td>
             <td class="contact-cell">
                 {% if settings.address %}<div class="contact-row"><span class="icon-wrap"><img src="{{ icon.pin_white }}" width="10" class="icon"></span>{{ settings.address }}</div>{% endif %}
