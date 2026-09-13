@@ -27,6 +27,7 @@ class CompanySettingsRepository extends ServiceEntityRepository
         }
 
         $settings = new CompanySettings();
+        $settings->setName('Mon entreprise');
         $this->getEntityManager()->persist($settings);
         $this->getEntityManager()->flush();
 
