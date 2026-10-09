@@ -18,11 +18,14 @@ use Symfony\Component\Mime\Email;
  */
 class NotificationMailer
 {
+    /**
+     * @param string[] $notifyEmails
+     */
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
         private readonly string $fromEmail,
-        private readonly string $notifyEmail,
+        private readonly array $notifyEmails,
         private readonly string $companyName,
     ) {
     }
@@ -87,7 +90,7 @@ class NotificationMailer
 
         $email = (new Email())
             ->from($this->fromEmail)
-            ->to($this->notifyEmail)
+            ->to(...$this->notifyEmails)
             ->subject("[{$this->companyName}] {$subject}")
             ->text($body);
 
