@@ -8,8 +8,13 @@ parameters:
     app.company_tagline: "Équipements de fitness professionnels"
     app.whatsapp_number: "213770306666"
     app.phone_number: "0770 30 66 66"
+    # Mailbox actually authenticated for sending (SMTP) - stays info@viefit-dz.com,
+    # since the mail server only accepts sending as the authenticated account.
     app.contact_email: "info@viefit-dz.com"
     app.contact_email_secondary: "info@sarlvivre.com"
+    # Address shown publicly on the site (footer, contact page). Independent from
+    # the sending account above - both mailboxes still receive every submission.
+    app.contact_email_display: "info@sarlvivre.com"
     app.technical_phone: "0770 69 65 79"
     app.technical_phone_intl: "213770696579"
     app.technical_email: "tiitou.alb@gmail.com"

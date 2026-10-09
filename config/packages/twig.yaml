@@ -5,7 +5,7 @@ twig:
         company_tagline: '%app.company_tagline%'
         whatsapp_number: '%app.whatsapp_number%'
         phone_number: '%app.phone_number%'
-        contact_email: '%app.contact_email%'
+        contact_email: '%app.contact_email_display%'
         technical_phone: '%app.technical_phone%'
         technical_phone_intl: '%app.technical_phone_intl%'
         technical_email: '%app.technical_email%'
