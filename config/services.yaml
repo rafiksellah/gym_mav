@@ -8,7 +8,7 @@ parameters:
     app.company_tagline: "Équipements de fitness professionnels"
     app.whatsapp_number: "213770306666"
     app.phone_number: "0770 30 66 66"
-    app.contact_email: "info@sarlvivre.com"
+    app.contact_email: "info@viefit-dz.com"
     app.technical_phone: "0770 69 65 79"
     app.technical_phone_intl: "213770696579"
     app.technical_email: "tiitou.alb@gmail.com"
@@ -39,3 +39,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\NotificationMailer:
+        arguments:
+            $fromEmail: "%app.contact_email%"
+            $notifyEmail: "%app.contact_email%"
+            $companyName: "%app.company_name%"

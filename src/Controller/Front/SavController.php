@@ -4,6 +4,7 @@ namespace App\Controller\Front;
 
 use App\Entity\SavRequest;
 use App\Form\SavRequestType;
+use App\Service\NotificationMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SavController extends AbstractController
 {
     #[Route('/service-apres-vente', name: 'front_sav')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, NotificationMailer $notificationMailer): Response
     {
         $savRequest = new SavRequest();
         $form = $this->createForm(SavRequestType::class, $savRequest);
@@ -22,6 +23,8 @@ class SavController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($savRequest);
             $entityManager->flush();
+
+            $notificationMailer->notifySavRequest($savRequest);
 
             $this->addFlash('success', 'Votre demande d\'intervention a bien été envoyée. Notre équipe SAV vous recontactera rapidement.');
 

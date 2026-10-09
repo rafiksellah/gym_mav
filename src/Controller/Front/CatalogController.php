@@ -6,6 +6,7 @@ use App\Entity\QuoteRequest;
 use App\Form\QuoteRequestType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Service\NotificationMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,7 @@ class CatalogController extends AbstractController
     }
 
     #[Route('/catalogue/{slug}', name: 'front_product_show')]
-    public function show(string $slug, Request $request, ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
+    public function show(string $slug, Request $request, ProductRepository $productRepository, EntityManagerInterface $entityManager, NotificationMailer $notificationMailer): Response
     {
         $product = $productRepository->findActiveBySlug($slug);
 
@@ -56,6 +57,8 @@ class CatalogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($quoteRequest);
             $entityManager->flush();
+
+            $notificationMailer->notifyQuoteRequest($quoteRequest);
 
             $this->addFlash('success', 'Votre demande de devis a bien été envoyée. Nous vous recontacterons rapidement.');
 
